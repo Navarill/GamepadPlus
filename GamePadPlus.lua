@@ -17,7 +17,15 @@ function GPP.Initialize(event, addon)
 	
 	em:UnregisterForEvent("GamePadPlusInitialize", EVENT_ADD_ON_LOADED)
 	
-	GPP.settings = ZO_SavedVars:NewAccountWide("GamePadPlusSavedVars", 1, nil, GPP.defaults)
+	-- GPP.settings = ZO_SavedVars:NewAccountWide("GamePadPlusSavedVars", 1, nil, GPP.defaults)
+	
+	-- Fetch the saved variables
+    GPP.settings = LibSavedVars:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
+                     :AddCharacterSettingsToggle(GPP.name .. "_Character")
+    
+    if LSV_Data.EnableDefaultsTrimming then
+        GPP.settings:EnableDefaultsTrimming()
+    end
 
 	GPP.MakeMenu()
 

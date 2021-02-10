@@ -17,7 +17,10 @@ function GPP.MakeMenu()
 	}
 
 	local optionsTable = {
-				
+	
+		-- Account-wide settings
+        GPP.settings:GetLibAddonMenuAccountCheckbox(),
+
         {
             type = "checkbox",
             name = "Arkadius' Trade Tools",
