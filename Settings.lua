@@ -1,3 +1,8 @@
+--[[
+		GamePadPlus
+		Gamepad UI enhancement
+ ]]
+
 if GamePadPlus == nil then GamePadPlus = {} end
 local GPP = GamePadPlus
 
@@ -15,6 +20,9 @@ function GPP.MakeMenu()
         registerForDefaults = true,
         -- website = "https://www.esoui.com/downloads/info2862-AdBlock.html",
 	}
+	
+	local menu = LibAddonMenu2
+	menu:RegisterAddonPanel("GamePadPlus", panelData)
 
 	local optionsTable = {
 	
@@ -53,8 +61,6 @@ function GPP.MakeMenu()
 		
 	}
 	
-	local menu = LibAddonMenu2
-	menu:RegisterAddonPanel("GamePadPlus", panelData)
 	menu:RegisterOptionControls("GamePadPlus", optionsTable)
 	
 end

@@ -1,3 +1,8 @@
+--[[
+		GamePadPlus
+		Gamepad UI enhancement
+ ]]
+
 if not GamePadPlus then GamePadPlus = {} end
 local GPP = GamePadPlus
 local em = GetEventManager()
@@ -16,9 +21,7 @@ function GPP.Initialize(event, addon)
 	if addon ~= GPP.name then return end
 	
 	em:UnregisterForEvent("GamePadPlusInitialize", EVENT_ADD_ON_LOADED)
-	
-	-- GPP.settings = ZO_SavedVars:NewAccountWide("GamePadPlusSavedVars", 1, nil, GPP.defaults)
-	
+
 	-- Fetch the saved variables
     GPP.settings = LibSavedVars:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
                      :AddCharacterSettingsToggle(GPP.name .. "_Character")
