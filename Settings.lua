@@ -6,9 +6,23 @@
 if GamePadPlus == nil then GamePadPlus = {} end
 local GPP = GamePadPlus
 
-
 function GPP.MakeMenu()
-  
+
+	GPP.defaults = {
+		ATT = false,
+		MM = false,
+		TTC = false,
+	}
+	
+	-- Initialize saved variables
+	GPP.settings = LibSavedVars
+		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
+		:AddCharacterSettingsToggle(GPP.name .. "_Character")
+	
+	if LSV_Data.EnableDefaultsTrimming then
+		GPP.settings:EnableDefaultsTrimming()
+	end
+
 	local panelData = {
     		type = "panel",
     		name = "GamePadPlus",
@@ -20,9 +34,8 @@ function GPP.MakeMenu()
         registerForDefaults = true,
         -- website = "https://www.esoui.com/downloads/info2862-AdBlock.html",
 	}
-	
-	local menu = LibAddonMenu2
-	menu:RegisterAddonPanel("GamePadPlus", panelData)
+
+	LibAddonMenu2:RegisterAddonPanel("GamePadPlus", panelData)
 
 	local optionsTable = {
 	
@@ -32,7 +45,7 @@ function GPP.MakeMenu()
         {
             type = "checkbox",
             name = "Arkadius' Trade Tools",
-            tooltip = "Hides text similar to 'Wts lootruns...'",
+            tooltip = "Show pricing info from Arkadius' Trade Tools",
             getFunc = function() return GPP.settings.att end,
             setFunc = function(value) GPP.settings.att = value end,
             width = "full",
@@ -42,7 +55,7 @@ function GPP.MakeMenu()
         {
             type = "checkbox",
             name = "Master Merchant",
-            tooltip = "Hides all guild ads with a guild linking",
+            tooltip = "Show pricing info from Master Merchant",
             getFunc = function() return GPP.settings.mm end,
             setFunc = function(value) GPP.settings.mm = value end,
             width = "full",
@@ -52,15 +65,15 @@ function GPP.MakeMenu()
         {
             type = "checkbox",
             name = "Tamriel Trade Centre",
-            tooltip = "Hides 'wts/wtb crowns' messages",
+            tooltip = "Show pricing info from Tamriel Trade Centre",
             getFunc = function() return GPP.settings.ttc end,
             setFunc = function(value) GPP.settings.ttc = value end,
             width = "full",
             default = GPP.defaults.ttc,
         },
-		
+
 	}
-	
-	menu:RegisterOptionControls("GamePadPlus", optionsTable)
-	
+
+	LibAddonMenu2:RegisterOptionControls("GamePadPlus", optionsTable)
+
 end
