@@ -1,27 +1,29 @@
 --[[
 		GamePadPlus
-		Gamepad UI enhancement
+		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
  ]]
  
 -- GamePadPlus namespace
 if GamePadPlus == nil then GamePadPlus = {} end
 
-local GPP = GamePadPlus
+local addon = GamePadPlus
 
-GPP.name = "GamePadPlus"
-GPP.title = "GamePad Plus"
-GPP.author = "Sidrinius"
-GPP.version = "1.0.0"
-GPP.settings = {}
+addon.name = "GamePadPlus"
+addon.title = "GamePad Plus"
+addon.author = "Sidrinius"
+addon.version = "1.0.0"
+addon.settings = {}
 
-function GPP.Initialize(event, addon)
+-- Initializing the addon
+function OnAddonLoaded(eventCode, addOnName)
 	
-	if addon ~= GPP.name then return end
-	EVENT_MANAGER:UnregisterForEvent("GamePadPlusInitialize", EVENT_ADD_ON_LOADED)
+	if (addOnName ~= addon.name) then return end
+	EVENT_MANAGER:UnregisterForEvent(addon.name, eventCode)
 
-	GPP.MakeMenu()
+	SettingsSetup()
 
 end
 
-EVENT_MANAGER:RegisterForEvent("GamePadPlusInitialize", EVENT_ADD_ON_LOADED, function(...) GPP.Initialize(...) end)
+-- Register Events
+EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_ADD_ON_LOADED, OnAddonLoaded)

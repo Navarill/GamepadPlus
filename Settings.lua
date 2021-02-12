@@ -1,38 +1,38 @@
 --[[
 		GamePadPlus
-		Gamepad UI enhancement
+		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
  ]]
 
 -- GamePadPlus namespace
 if GamePadPlus == nil then GamePadPlus = {} end
 
-local GPP = GamePadPlus
+local addon = GamePadPlus
 
-function GPP.MakeMenu()
+function SettingsSetup()
 
-	GPP.defaults = {
+	addon.defaults = {
 		ATT = false,
 		MM = false,
 		TTC = false,
 	}
 	
 	-- Initialize saved variables
-	GPP.settings = LibSavedVars
-		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
-		:AddCharacterSettingsToggle(GPP.name .. "_Character")
+	addon.settings = LibSavedVars
+		:NewAccountWide(addon.name .. "_Account", addon.defaults)
+		:AddCharacterSettingsToggle(addon.name .. "_Character")
 	
 	if LSV_Data.EnableDefaultsTrimming then
-		GPP.settings:EnableDefaultsTrimming()
+		addon.settings:EnableDefaultsTrimming()
 	end
 
 	local panelData = {
     	type = "panel",
-    	name = GPP.title,
-    	displayName = GPP.title,
-    	author = GPP.author,
-        version = GPP.version,
-        slashCommand = "/gpp",
+    	name = addon.title,
+    	displayName = addon.title,
+    	author = addon.author,
+        version = addon.version,
+        slashCommand = "/addon",
         registerForRefresh = true,
         registerForDefaults = true,
         -- website = "insert URL here",
@@ -43,7 +43,7 @@ function GPP.MakeMenu()
 	local optionsTable = {
 	
 		-- Account-wide settings
-        GPP.settings:GetLibAddonMenuAccountCheckbox(),
+        addon.settings:GetLibAddonMenuAccountCheckbox(),
 		
 		-- Divider
 		{
@@ -55,30 +55,30 @@ function GPP.MakeMenu()
             type = "checkbox",
             name = "Arkadius' Trade Tools",
             tooltip = "Show pricing info from Arkadius' Trade Tools",
-            getFunc = function() return GPP.settings.att end,
-            setFunc = function(value) GPP.settings.att = value end,
+            getFunc = function() return addon.settings.att end,
+            setFunc = function(value) addon.settings.att = value end,
             width = "full",
-            default = GPP.defaults.att,
+            default = addon.defaults.att,
         },
 				
         {
             type = "checkbox",
             name = "Master Merchant",
             tooltip = "Show pricing info from Master Merchant",
-            getFunc = function() return GPP.settings.mm end,
-            setFunc = function(value) GPP.settings.mm = value end,
+            getFunc = function() return addon.settings.mm end,
+            setFunc = function(value) addon.settings.mm = value end,
             width = "full",
-            default = GPP.defaults.mm,
+            default = addon.defaults.mm,
         },
 				
         {
             type = "checkbox",
             name = "Tamriel Trade Centre",
             tooltip = "Show pricing info from Tamriel Trade Centre",
-            getFunc = function() return GPP.settings.ttc end,
-            setFunc = function(value) GPP.settings.ttc = value end,
+            getFunc = function() return addon.settings.ttc end,
+            setFunc = function(value) addon.settings.ttc = value end,
             width = "full",
-            default = GPP.defaults.ttc,
+            default = addon.defaults.ttc,
         },
 
 	}
