@@ -1,9 +1,12 @@
 --[[
 		GamePadPlus
 		Gamepad UI enhancement
+		License: The MIT License
  ]]
 
+-- GamePadPlus namespace
 if GamePadPlus == nil then GamePadPlus = {} end
+
 local GPP = GamePadPlus
 
 function GPP.MakeMenu()

@@ -1,9 +1,12 @@
 --[[
 		GamePadPlus
 		Gamepad UI enhancement
+		License: The MIT License
  ]]
-
-if not GamePadPlus then GamePadPlus = {} end
+ 
+ -- GamePadPlus namespace
+--if not GamePadPlus then GamePadPlus = {} end
+if GamePadPlus == nil then GamePadPlus = {} end
 
 local GPP = GamePadPlus
 
