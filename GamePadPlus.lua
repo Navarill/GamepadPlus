@@ -4,13 +4,14 @@
 		License: The MIT License
  ]]
  
- -- GamePadPlus namespace
---if not GamePadPlus then GamePadPlus = {} end
+-- GamePadPlus namespace
 if GamePadPlus == nil then GamePadPlus = {} end
 
 local GPP = GamePadPlus
 
 GPP.name = "GamePadPlus"
+GPP.title = "GamePad Plus"
+GPP.author = "Sidrinius"
 GPP.version = "1.0.0"
 GPP.settings = {}
 

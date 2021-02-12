@@ -27,15 +27,15 @@ function GPP.MakeMenu()
 	end
 
 	local panelData = {
-    		type = "panel",
-    		name = "GamePadPlus",
-    		displayName = "GamePadPlus",
-    		author = "|c6C00FF@Sidrinius|r",
+    	type = "panel",
+    	name = GPP.title,
+    	displayName = GPP.title,
+    	author = GPP.author,
         version = GPP.version,
         slashCommand = "/gpp",
         registerForRefresh = true,
         registerForDefaults = true,
-        -- website = "https://www.esoui.com/downloads/info2862-AdBlock.html",
+        -- website = "insert URL here",
 	}
 
 	LibAddonMenu2:RegisterAddonPanel("GamePadPlus", panelData)
@@ -44,6 +44,12 @@ function GPP.MakeMenu()
 	
 		-- Account-wide settings
         GPP.settings:GetLibAddonMenuAccountCheckbox(),
+		
+		-- Divider
+		{
+			type = "divider",
+			width = "full",
+		},
 
         {
             type = "checkbox",
