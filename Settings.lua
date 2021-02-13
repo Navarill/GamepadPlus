@@ -4,12 +4,9 @@
 		License: The MIT License
  ]]
 
--- GamePadPlus namespace
-if GamePadPlus == nil then GamePadPlus = {} end
+function GamePadPlus:SettingsSetup()
 
-local addon = GamePadPlus
-
-function SettingsSetup()
+	local addon = GamePadPlus
 
 	addon.defaults = {
 		ATT = false,
@@ -17,7 +14,9 @@ function SettingsSetup()
 		TTC = false,
 	}
 	
-	-- Initialize saved variables
+	--------------------------------------------------
+	--|  Initialize saved variables  |--
+	--------------------------------------------------
 	addon.settings = LibSavedVars
 		:NewAccountWide(addon.name .. "_Account", addon.defaults)
 		:AddCharacterSettingsToggle(addon.name .. "_Character")
@@ -32,25 +31,33 @@ function SettingsSetup()
     	displayName = addon.title,
     	author = addon.author,
         version = addon.version,
-        slashCommand = "/addon",
+        -- slashCommand = "/gpp",
         registerForRefresh = true,
         registerForDefaults = true,
         -- website = "insert URL here",
 	}
 
-	LibAddonMenu2:RegisterAddonPanel("GamePadPlus", panelData)
+	LibAddonMenu2:RegisterAddonPanel(addon.name, panelData)
 
 	local optionsTable = {
 	
-		-- Account-wide settings
+		--------------------------------------------------
+		--|  Account-wide settings  |--
+		--------------------------------------------------
         addon.settings:GetLibAddonMenuAccountCheckbox(),
 		
-		-- Divider
+		
+		--------------------------------------------------
+		--|  Divider  |--
+		--------------------------------------------------
 		{
 			type = "divider",
 			width = "full",
 		},
 
+		--------------------------------------------------
+		--|  Checkbox for Arkadius' Trade Tools  |--
+		--------------------------------------------------
         {
             type = "checkbox",
             name = "Arkadius' Trade Tools",
@@ -60,7 +67,10 @@ function SettingsSetup()
             width = "full",
             default = addon.defaults.att,
         },
-				
+
+		--------------------------------------------------
+		--|  Checkbox for Master Merchant  |--
+		--------------------------------------------------
         {
             type = "checkbox",
             name = "Master Merchant",
@@ -70,7 +80,10 @@ function SettingsSetup()
             width = "full",
             default = addon.defaults.mm,
         },
-				
+
+		--------------------------------------------------
+		--|  Checkbox for Tamriel Trade Centre  |--
+		--------------------------------------------------
         {
             type = "checkbox",
             name = "Tamriel Trade Centre",
@@ -80,9 +93,9 @@ function SettingsSetup()
             width = "full",
             default = addon.defaults.ttc,
         },
-
+		
 	}
 
-	LibAddonMenu2:RegisterOptionControls("GamePadPlus", optionsTable)
+	LibAddonMenu2:RegisterOptionControls(addon.name, optionsTable)
 
 end

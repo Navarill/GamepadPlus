@@ -4,9 +4,15 @@
 		License: The MIT License
  ]]
  
--- GamePadPlus namespace
+--------------------------------------------------
+--|  Create Namespace  |--
+--------------------------------------------------
 if GamePadPlus == nil then GamePadPlus = {} end
 
+
+--------------------------------------------------
+--|  Initialize Variables  |--
+--------------------------------------------------
 local addon = GamePadPlus
 
 addon.name = "GamePadPlus"
@@ -15,15 +21,21 @@ addon.author = "Sidrinius"
 addon.version = "1.0.0"
 addon.settings = {}
 
--- Initializing the addon
-function OnAddonLoaded(eventCode, addOnName)
+
+--------------------------------------------------
+--|  OnAddOnLoaded  |--
+--------------------------------------------------
+function addon.OnAddOnLoaded(eventCode, addOnName)
 	
 	if (addOnName ~= addon.name) then return end
 	EVENT_MANAGER:UnregisterForEvent(addon.name, eventCode)
 
-	SettingsSetup()
+	addon:SettingsSetup()
 
 end
 
--- Register Events
-EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_ADD_ON_LOADED, OnAddonLoaded)
+
+--------------------------------------------------
+--|  Register Events  |--
+--------------------------------------------------
+EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_ADD_ON_LOADED, addon.OnAddOnLoaded)
