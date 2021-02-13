@@ -9,7 +9,8 @@ function GamePadPlus:SettingsSetup()
 	local addon = GamePadPlus
 
 	addon.defaults = {
-		ATT = false,
+		invtooltip = true,
+		--ATT = false,
 		MM = false,
 		TTC = false,
 	}
@@ -24,6 +25,10 @@ function GamePadPlus:SettingsSetup()
 	if LSV_Data.EnableDefaultsTrimming then
 		addon.settings:EnableDefaultsTrimming()
 	end
+	
+	--------------------------------------------------
+	--|  Settings panel  |--
+	--------------------------------------------------
 
 	local panelData = {
     	type = "panel",
@@ -38,27 +43,42 @@ function GamePadPlus:SettingsSetup()
 	}
 
 	LibAddonMenu2:RegisterAddonPanel(addon.name, panelData)
+	
+	--------------------------------------------------
+	--|  Options table  |--
+	--------------------------------------------------
 
 	local optionsTable = {
 	
-		--------------------------------------------------
-		--|  Account-wide settings  |--
-		--------------------------------------------------
+		-- Account-wide settings
         addon.settings:GetLibAddonMenuAccountCheckbox(),
-		
-		
-		--------------------------------------------------
-		--|  Divider  |--
-		--------------------------------------------------
+
+		-- Divider
 		{
 			type = "divider",
 			width = "full",
 		},
 
-		--------------------------------------------------
-		--|  Checkbox for Arkadius' Trade Tools  |--
-		--------------------------------------------------
+		-- Checkbox for Inventory Tooltip
         {
+            type = "checkbox",
+            name = "Inventory Tooltip",
+            tooltip = "Show inventory tooltip info",
+            getFunc = function() return addon.settings.invtooltip end,
+            setFunc = function(value) addon.settings.invtooltip = value end,
+            width = "full",
+            default = addon.defaults.invtooltip,
+        },
+		
+		-- Divider
+		{
+			type = "divider",
+			width = "full",
+		},
+
+		-- Checkbox for Arkadius' Trade Tools
+        --[[  ** NOT YET IMPLEMENTED **
+		{
             type = "checkbox",
             name = "Arkadius' Trade Tools",
             tooltip = "Show pricing info from Arkadius' Trade Tools",
@@ -67,10 +87,9 @@ function GamePadPlus:SettingsSetup()
             width = "full",
             default = addon.defaults.att,
         },
+		]]--
 
-		--------------------------------------------------
-		--|  Checkbox for Master Merchant  |--
-		--------------------------------------------------
+		-- Checkbox for Master Merchant
         {
             type = "checkbox",
             name = "Master Merchant",
@@ -81,9 +100,7 @@ function GamePadPlus:SettingsSetup()
             default = addon.defaults.mm,
         },
 
-		--------------------------------------------------
-		--|  Checkbox for Tamriel Trade Centre  |--
-		--------------------------------------------------
+		-- Checkbox for Tamriel Trade Centre
         {
             type = "checkbox",
             name = "Tamriel Trade Centre",
@@ -93,7 +110,6 @@ function GamePadPlus:SettingsSetup()
             width = "full",
             default = addon.defaults.ttc,
         },
-		
 	}
 
 	LibAddonMenu2:RegisterOptionControls(addon.name, optionsTable)
