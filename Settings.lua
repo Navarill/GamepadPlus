@@ -10,9 +10,9 @@ function GamePadPlus:SettingsSetup()
 
 	addon.defaults = {
 		invtooltip = true,
-		--ATT = false,
-		MM = false,
-		TTC = false,
+		-- att = false,
+		mm = false,
+		ttc = false,
 	}
 	
 	--------------------------------------------------
