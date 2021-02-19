@@ -12,6 +12,7 @@ function GamePadPlus:SettingsSetup()
 		invtooltip = true,
 		-- att = false,
 		mm = false,
+		recipes = false,
 		ttc = false,
 	}
 	
@@ -70,6 +71,17 @@ function GamePadPlus:SettingsSetup()
             default = addon.defaults.invtooltip,
         },
 		
+		-- Checkbox Recipes
+        {
+            type = "checkbox",
+            name = "Recipes",
+            tooltip = "Show recipe pricing info",
+            getFunc = function() return addon.settings.recipes end,
+            setFunc = function(value) addon.settings.recipes = value end,
+            width = "full",
+            default = addon.defaults.recipes,
+        },
+		
 		-- Divider
 		{
 			type = "divider",
@@ -77,7 +89,7 @@ function GamePadPlus:SettingsSetup()
 		},
 
 		-- Checkbox for Arkadius' Trade Tools
-        --[[  ** NOT YET IMPLEMENTED **
+        --[[
 		{
             type = "checkbox",
             name = "Arkadius' Trade Tools",

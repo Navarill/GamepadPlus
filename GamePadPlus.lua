@@ -27,7 +27,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
     local itemLink = GetItemLink(bagId, slotIndex)      
     local itemType, specializedItemType = GetItemLinkItemType(itemLink)
     
-	--if GamePadBuddy.curSavedVars.recipes and itemType == ITEMTYPE_RECIPE then
+	--if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
 	--[[
 	if itemType == ITEMTYPE_RECIPE then
 		if(IsItemLinkRecipeKnown(itemLink)) then
@@ -37,8 +37,63 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 	]]--
+	
+	--------------------------------------------------
+	--|  Arkadius' Trade Tools  |--
+	--------------------------------------------------
 
+	--[[
+	if addon.settings.att and ArkadiusTradeTools ~= nil then
+		--tooltip:AddLine(zo_strformat("|r"))
+		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
+		tooltip:AddLine(zo_strformat("|cf58585No listing data|r"))
+		--tooltip:AddLine(zo_strformat("|r"))
+	end
+	]]--
 
+	--[[
+	if addon.settings.att and ArkadiusTradeTools then 
+		local priceLine, statusLine = GetATTPriceAndStatus(itemLink)
+		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
+		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", priceLine))
+		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", statusLine))
+	end
+	]]--
+	
+	--------------------------------------------------
+	--|  Master Merchant  |--
+	--------------------------------------------------
+	
+	if addon.settings.mm and MasterMerchant ~= nil then 
+		--tooltip:AddLine(zo_strformat("|r"))
+		tooltip:AddLine(zo_strformat("|c7171d1MM:|r"))
+		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
+		if(tipLine ~= nil) then
+			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
+		else
+			tooltip:AddLine(zo_strformat("|c7171d1No listing data|r"))
+		end
+
+		local craftInfo = MasterMerchant:itemCraftPriceTip(itemLink)
+		if craftInfo ~= nil then
+			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo)) 
+		end
+
+        if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
+			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
+			
+			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
+			if(tipLine ~= nil) then
+				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
+			else
+				tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r")) 
+			end
+		end
+	end
+	
+	--------------------------------------------------
+	--|  Tamriel Trade Centre  |--
+	--------------------------------------------------
     if addon.settings.ttc and TamrielTradeCentre ~= nil then
 		tooltip:AddLine(zo_strformat("|cf23d8eTTC:|r"))
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
@@ -67,8 +122,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
           end
         end
  
-		--[[
-        if GamePadBuddy.curSavedVars.recipes and itemType == ITEMTYPE_RECIPE then
+        if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
 		
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
@@ -95,59 +149,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 				end
 			  end
 			end
-	 
 		end
-		]]--
-    end 
-	
-	if addon.settings.mm and MasterMerchant ~= nil then 
-		--tooltip:AddLine(zo_strformat("|r"))
-		tooltip:AddLine(zo_strformat("|c7171d1MM:|r"))
-		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
-		if(tipLine ~= nil) then
-			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
-		else
-			tooltip:AddLine(zo_strformat("|c7171d1No listing data|r"))
-		end
-
-		local craftInfo = MasterMerchant:itemCraftPriceTip(itemLink)
-		if craftInfo ~= nil then
-			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo)) 
-		end
-
-				
-		--[[
-        if GamePadBuddy.curSavedVars.recipes and itemType == ITEMTYPE_RECIPE then
-			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
-			
-			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
-			if(tipLine ~= nil) then
-				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
-			else
-				tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r")) 
-			end
-		end
-		]]--
-	end
-
-	--[[
-	if addon.settings.att and ArkadiusTradeTools ~= nil then
-		--tooltip:AddLine(zo_strformat("|r"))
-		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
-		tooltip:AddLine(zo_strformat("|cf58585No listing data|r"))
-		--tooltip:AddLine(zo_strformat("|r"))
-	end
-	]]--
-
-	--[[
-	if GamePadBuddy.curSavedVars.att and ArkadiusTradeTools then 
-		local priceLine, statusLine = GetATTPriceAndStatus(itemLink)
-		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
-		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", priceLine))
-		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", statusLine))
-	end
-	]]--
-	
+    end
 end
 
 --------------------------------------------------
