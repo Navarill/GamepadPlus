@@ -7,6 +7,7 @@
 function GamePadPlus:SettingsSetup()
 
 	local addon = GamePadPlus
+	local LAM = LibAddonMenu2
 
 	addon.defaults = {
 		invtooltip = true,
@@ -43,7 +44,7 @@ function GamePadPlus:SettingsSetup()
         -- website = "insert URL here",
 	}
 
-	LibAddonMenu2:RegisterAddonPanel(addon.name, panelData)
+	LAM:RegisterAddonPanel(addon.name, panelData)
 	
 	--------------------------------------------------
 	--|  Options table  |--
@@ -124,6 +125,6 @@ function GamePadPlus:SettingsSetup()
         },
 	}
 
-	LibAddonMenu2:RegisterOptionControls(addon.name, optionsTable)
+	LAM:RegisterOptionControls(addon.name, optionsTable)
 
 end
