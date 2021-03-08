@@ -86,7 +86,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			if(tipLine ~= nil) then
 				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
 			else
-				tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r")) 
+				--tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r"))
+				tooltip:AddLine(zo_strformat("|c7171d1No listing data|r"))
 			end
 		end
 	end
