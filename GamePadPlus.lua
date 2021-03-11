@@ -24,20 +24,23 @@ addon.settings = {}
 --|  AddInventoryPreInfo  |--
 --------------------------------------------------
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
+
     local itemLink = GetItemLink(bagId, slotIndex)      
     local itemType, specializedItemType = GetItemLinkItemType(itemLink)
+
+	--------------------------------------------------
+	--|  Recipes  |--
+	--------------------------------------------------	
     
-	--if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
-	--[[
-	if itemType == ITEMTYPE_RECIPE then
+	if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
+	
 		if(IsItemLinkRecipeKnown(itemLink)) then
 			tooltip:AddLine(GetString(SI_RECIPE_ALREADY_KNOWN))
 		else
 			tooltip:AddLine(GetString(SI_USE_TO_LEARN_RECIPE))
 		end
 	end
-	]]--
-	
+
 	--------------------------------------------------
 	--|  Arkadius' Trade Tools  |--
 	--------------------------------------------------
@@ -66,12 +69,12 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	
 	if addon.settings.mm and MasterMerchant ~= nil then 
 		--tooltip:AddLine(zo_strformat("|r"))
-		tooltip:AddLine(zo_strformat("|c7171d1MM:|r"))
+		--tooltip:AddLine(zo_strformat("|c7171d1MM:|r"))
 		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
 		if(tipLine ~= nil) then
 			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
 		else
-			tooltip:AddLine(zo_strformat("|c7171d1No listing data|r"))
+			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
 
 		local craftInfo = MasterMerchant:itemCraftPriceTip(itemLink)
@@ -87,7 +90,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
 			else
 				--tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r"))
-				tooltip:AddLine(zo_strformat("|c7171d1No listing data|r"))
+				--tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
 		end
 	end
@@ -96,15 +99,15 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Tamriel Trade Centre  |--
 	--------------------------------------------------
     if addon.settings.ttc and TamrielTradeCentre ~= nil then
-		tooltip:AddLine(zo_strformat("|cf23d8eTTC:|r"))
+		--tooltip:AddLine(zo_strformat("|cf23d8eTTC:|r"))
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
     
         if (priceInfo == nil) then
-			tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
+			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
         else
           if (priceInfo.SuggestedPrice ~= nil) then
-			tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY), 
+			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY), 
               TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
           end
 
