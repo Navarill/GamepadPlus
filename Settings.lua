@@ -24,9 +24,9 @@ function GamePadPlus:SettingsSetup()
 		:NewAccountWide(addon.name .. "_Account", addon.defaults)
 		:AddCharacterSettingsToggle(addon.name .. "_Character")
 	
-	if LSV_Data.EnableDefaultsTrimming then
-		addon.settings:EnableDefaultsTrimming()
-	end
+	--if LSV_Data.EnableDefaultsTrimming then
+		--addon.settings:EnableDefaultsTrimming()
+	--end
 	
 	--------------------------------------------------
 	--|  Settings panel  |--
