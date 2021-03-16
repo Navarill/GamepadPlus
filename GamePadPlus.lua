@@ -88,7 +88,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
 			if(tipLine ~= nil) then
 				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
-			else
+			--else
 				--tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r"))
 				--tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
