@@ -11,7 +11,7 @@ function GamePadPlus:SettingsSetup()
 
 	addon.defaults = {
 		invtooltip = true,
-		-- att = false,
+		att = false,
 		mm = false,
 		recipes = false,
 		ttc = false,
@@ -86,7 +86,6 @@ function GamePadPlus:SettingsSetup()
 		},
 
 		-- Checkbox for Arkadius' Trade Tools
-        --[[
 		{
             type = "checkbox",
             name = "Arkadius' Trade Tools",
@@ -96,7 +95,6 @@ function GamePadPlus:SettingsSetup()
             width = "full",
             default = addon.defaults.att,
         },
-		]]--
 
 		-- Checkbox for Master Merchant
         {

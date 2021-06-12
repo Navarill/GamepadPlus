@@ -45,23 +45,14 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Arkadius' Trade Tools  |--
 	--------------------------------------------------
 
-	--[[
-	if addon.settings.att and ArkadiusTradeTools ~= nil then
-		--tooltip:AddLine(zo_strformat("|r"))
-		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
-		tooltip:AddLine(zo_strformat("|cf58585No listing data|r"))
-		--tooltip:AddLine(zo_strformat("|r"))
+	if addon.settings.att and ArkadiusTradeTools then
+		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
+		if(avgPrice == nil or avgPrice == 0) then
+			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
+		else
+			tooltip:AddLine(zo_strformat("|cf58585ATT price (avg): <<1>>|r", avgPrice))
+        end
 	end
-	]]--
-
-	--[[
-	if addon.settings.att and ArkadiusTradeTools then 
-		local priceLine, statusLine = GetATTPriceAndStatus(itemLink)
-		tooltip:AddLine(zo_strformat("|cf58585ATT:|r"))
-		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", priceLine))
-		tooltip:AddLine(zo_strformat("|cf58585<<1>>|r", statusLine))
-	end
-	]]--
 	
 	--------------------------------------------------
 	--|  Master Merchant  |--
