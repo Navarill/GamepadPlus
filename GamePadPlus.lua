@@ -59,8 +59,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--------------------------------------------------
 	
 	if addon.settings.mm and MasterMerchant ~= nil then 
-		--tooltip:AddLine(zo_strformat("|r"))
-		--tooltip:AddLine(zo_strformat("|c7171d1MM:|r"))
 		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
 		if(tipLine ~= nil) then
 			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
@@ -79,9 +77,9 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
 			if(tipLine ~= nil) then
 				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
-			--else
+			else
 				--tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r"))
-				--tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
+				tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
 		end
 	end
@@ -90,7 +88,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Tamriel Trade Centre  |--
 	--------------------------------------------------
     if addon.settings.ttc and TamrielTradeCentre ~= nil then
-		--tooltip:AddLine(zo_strformat("|cf23d8eTTC:|r"))
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
     
