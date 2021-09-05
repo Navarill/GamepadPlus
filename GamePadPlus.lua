@@ -66,10 +66,11 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
 
-		local craftInfo = MasterMerchant:itemCraftPriceTip(itemLink)
-		if craftInfo ~= nil then
-			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo)) 
-		end
+		-- Master Merchange v3.6.46 made signifiance changes and the following code no longer works (9/3/2021)
+		-- local craftInfo = MasterMerchant:itemCraftPriceTip(itemLink)
+		-- if craftInfo ~= nil then
+			-- tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo)) 
+		-- end
 
         if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
@@ -78,7 +79,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			if(tipLine ~= nil) then
 				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
 			else
-				--tooltip:AddLine(zo_strformat("|c7171d1Product MM price (0 sales, 0 days): UNKNOWN|r"))
 				tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
 		end
