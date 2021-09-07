@@ -12,13 +12,13 @@ if GamePadPlus == nil then GamePadPlus = {} end
 --------------------------------------------------
 --|  Initialize Variables  |--
 --------------------------------------------------
-local addon = GamePadPlus
+local GPP = GamePadPlus
 
-addon.name = "GamePadPlus"
-addon.title = "GamePad Plus"
-addon.author = "Sidrinius"
-addon.version = "1.0.0"
-addon.settings = {}
+GPP.name = "GamePadPlus"
+GPP.title = "GamePad Plus"
+GPP.author = "Sidrinius"
+GPP.version = "1.0.0"
+GPP.settings = {}
 
 --------------------------------------------------
 --|  AddInventoryPreInfo  |--
@@ -32,7 +32,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Recipes  |--
 	--------------------------------------------------	
     
-	if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
+	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 	
 		if(IsItemLinkRecipeKnown(itemLink)) then
 			tooltip:AddLine(GetString(SI_RECIPE_ALREADY_KNOWN))
@@ -45,7 +45,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Arkadius' Trade Tools  |--
 	--------------------------------------------------
 
-	if addon.settings.att and ArkadiusTradeTools then
+	if GPP.settings.att and ArkadiusTradeTools then
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
 		if(avgPrice == nil or avgPrice == 0) then
 			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
@@ -58,7 +58,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Master Merchant  |--
 	--------------------------------------------------
 	
-	if addon.settings.mm and MasterMerchant ~= nil then 
+	if GPP.settings.mm and MasterMerchant ~= nil then 
 		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
 		if(tipLine ~= nil) then
 			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
@@ -71,7 +71,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo))
 		end
 
-        if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
+        if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			
 			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
@@ -86,7 +86,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--------------------------------------------------
 	--|  Tamriel Trade Centre  |--
 	--------------------------------------------------
-    if addon.settings.ttc and TamrielTradeCentre ~= nil then
+    if GPP.settings.ttc and TamrielTradeCentre ~= nil then
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
     
@@ -113,7 +113,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
           end
         end
  
-        if addon.settings.recipes and itemType == ITEMTYPE_RECIPE then
+        if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 		
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
@@ -162,7 +162,7 @@ function InventoryMenuHook(tooltip, method)
   local origMethod = tooltip[method]
   tooltip[method] = function(selectedData, ...) 
     origMethod(selectedData, ...)  
-	if addon.settings.invtooltip and tooltip.selectedEquipSlot then
+	if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
 		GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_WORN, tooltip.selectedEquipSlot)
 	end
 	  
@@ -188,12 +188,12 @@ end
 --------------------------------------------------
 --|  OnAddOnLoaded  |--
 --------------------------------------------------
-function addon.OnAddOnLoaded(eventCode, addOnName)
+function GPP.OnAddOnLoaded(eventCode, addOnName)
 	
-	if (addOnName ~= addon.name) then return end
-	EVENT_MANAGER:UnregisterForEvent(addon.name, eventCode)
+	if (addOnName ~= GPP.name) then return end
+	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
 
-	addon:SettingsSetup()
+	GPP:SettingsSetup()
 	
 	if(IsInGamepadPreferredMode()) then
 		LoadModules()
@@ -206,5 +206,5 @@ end
 --------------------------------------------------
 --|  Register Events  |--
 --------------------------------------------------
-EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_ADD_ON_LOADED, addon.OnAddOnLoaded)
-EVENT_MANAGER:RegisterForEvent(addon.name, EVENT_GAMEPAD_PREFERRED_MODE_CHANGED, function(code, inGamepad) LoadModules() end)
+EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_GAMEPAD_PREFERRED_MODE_CHANGED, function(code, inGamepad) LoadModules() end)

@@ -6,10 +6,10 @@
 
 function GamePadPlus:SettingsSetup()
 
-	local addon = GamePadPlus
+	local GPP = GamePadPlus
 	local LAM = LibAddonMenu2
 
-	addon.defaults = {
+	GPP.defaults = {
 		invtooltip = true,
 		att = false,
 		mm = false,
@@ -20,9 +20,9 @@ function GamePadPlus:SettingsSetup()
 	--------------------------------------------------
 	--|  Initialize saved variables  |--
 	--------------------------------------------------
-	addon.settings = LibSavedVars
-		:NewAccountWide(addon.name .. "_Account", addon.defaults)
-		:AddCharacterSettingsToggle(addon.name .. "_Character")
+	GPP.settings = LibSavedVars
+		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
+		:AddCharacterSettingsToggle(GPP.name .. "_Character")
 	
 	--------------------------------------------------
 	--|  Settings panel  |--
@@ -30,17 +30,17 @@ function GamePadPlus:SettingsSetup()
 
 	local panelData = {
     	type = "panel",
-    	name = addon.title,
-    	displayName = addon.title,
-    	author = addon.author,
-        version = addon.version,
+    	name = GPP.title,
+    	displayName = GPP.title,
+    	author = GPP.author,
+        version = GPP.version,
         -- slashCommand = "/gpp",
         registerForRefresh = true,
         registerForDefaults = true,
         -- website = "insert URL here",
 	}
 
-	LAM:RegisterAddonPanel(addon.name, panelData)
+	LAM:RegisterAddonPanel(GPP.name, panelData)
 	
 	--------------------------------------------------
 	--|  Options table  |--
@@ -49,7 +49,7 @@ function GamePadPlus:SettingsSetup()
 	local optionsTable = {
 	
 		-- Account-wide settings
-        addon.settings:GetLibAddonMenuAccountCheckbox(),
+        GPP.settings:GetLibAddonMenuAccountCheckbox(),
 
 		-- Divider
 		{
@@ -62,10 +62,10 @@ function GamePadPlus:SettingsSetup()
             type = "checkbox",
             name = "Inventory Tooltip",
             tooltip = "Show inventory tooltip info",
-            getFunc = function() return addon.settings.invtooltip end,
-            setFunc = function(value) addon.settings.invtooltip = value end,
+            getFunc = function() return GPP.settings.invtooltip end,
+            setFunc = function(value) GPP.settings.invtooltip = value end,
             width = "full",
-            default = addon.defaults.invtooltip,
+            default = GPP.defaults.invtooltip,
         },
 		
 		-- Checkbox Recipes
@@ -73,10 +73,10 @@ function GamePadPlus:SettingsSetup()
             type = "checkbox",
             name = "Recipes",
             tooltip = "Show recipe pricing info",
-            getFunc = function() return addon.settings.recipes end,
-            setFunc = function(value) addon.settings.recipes = value end,
+            getFunc = function() return GPP.settings.recipes end,
+            setFunc = function(value) GPP.settings.recipes = value end,
             width = "full",
-            default = addon.defaults.recipes,
+            default = GPP.defaults.recipes,
         },
 		
 		-- Divider
@@ -90,10 +90,10 @@ function GamePadPlus:SettingsSetup()
             type = "checkbox",
             name = "Arkadius' Trade Tools",
             tooltip = "Show pricing info from Arkadius' Trade Tools",
-            getFunc = function() return addon.settings.att end,
-            setFunc = function(value) addon.settings.att = value end,
+            getFunc = function() return GPP.settings.att end,
+            setFunc = function(value) GPP.settings.att = value end,
             width = "full",
-            default = addon.defaults.att,
+            default = GPP.defaults.att,
         },
 
 		-- Checkbox for Master Merchant
@@ -101,10 +101,10 @@ function GamePadPlus:SettingsSetup()
             type = "checkbox",
             name = "Master Merchant",
             tooltip = "Show pricing info from Master Merchant",
-            getFunc = function() return addon.settings.mm end,
-            setFunc = function(value) addon.settings.mm = value end,
+            getFunc = function() return GPP.settings.mm end,
+            setFunc = function(value) GPP.settings.mm = value end,
             width = "full",
-            default = addon.defaults.mm,
+            default = GPP.defaults.mm,
         },
 
 		-- Checkbox for Tamriel Trade Centre
@@ -112,13 +112,13 @@ function GamePadPlus:SettingsSetup()
             type = "checkbox",
             name = "Tamriel Trade Centre",
             tooltip = "Show pricing info from Tamriel Trade Centre",
-            getFunc = function() return addon.settings.ttc end,
-            setFunc = function(value) addon.settings.ttc = value end,
+            getFunc = function() return GPP.settings.ttc end,
+            setFunc = function(value) GPP.settings.ttc = value end,
             width = "full",
-            default = addon.defaults.ttc,
+            default = GPP.defaults.ttc,
         },
 	}
 
-	LAM:RegisterOptionControls(addon.name, optionsTable)
+	LAM:RegisterOptionControls(GPP.name, optionsTable)
 
 end
