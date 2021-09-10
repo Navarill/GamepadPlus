@@ -21,6 +21,21 @@ GPP.version = "1.0.0"
 GPP.settings = {}
 
 --------------------------------------------------
+--|  FormattedNumber  |--
+--------------------------------------------------
+function FormattedNumber(amount)
+	if not amount then
+		return tostring(0)
+	end
+	
+	if amount > 100 then
+		return ZO_CommaDelimitNumber(zo_floor(amount))
+	end
+
+	return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, .01))
+end
+
+--------------------------------------------------
 --|  AddInventoryPreInfo  |--
 --------------------------------------------------
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
@@ -59,19 +74,36 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--------------------------------------------------
 	
 	if GPP.settings.mm and MasterMerchant ~= nil then 
-		local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(itemLink, false, false)
-		if(tipLine ~= nil) then
-			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", tipLine))
+		local pricingData = MasterMerchant:itemStats(itemLink, false)
+		local avgPrice = pricingData.avgPrice
+		local numSales = pricingData.numSales
+		local numDays = pricingData.numDays
+		local numItems = pricingData.numItems
+		local bonanzaPrice = pricingData.bonanzaPrice
+		local bonanzaSales = pricingData.bonanzaSales
+		local bonanzaCount = pricingData.bonanzaCount
+		
+		-- Sales Price
+		if avgPrice ~= nil then
+			avgPriceFormatted = FormattedNumber(avgPrice)
+			if numSales > 1 then
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
+			else
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
+			end
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
-
-		local craftInfo = MasterMerchant:CraftCostPriceTip(itemLink, false)
-		if craftInfo ~= nil then
-			tooltip:AddLine(zo_strformat("|c7171d1<<1>>|r", craftInfo))
+		
+		-- Crafting Cost
+		local craftCost = MasterMerchant:itemCraftPrice(itemLink)
+		if craftCost ~= nil then
+			craftCostFormatted = FormattedNumber(craftCost)
+			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
 		end
 
-        if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+        -- Product Price
+		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			
 			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
