@@ -75,13 +75,13 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	
 	if GPP.settings.mm and MasterMerchant ~= nil then 
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
-		local avgPrice = pricingData.avgPrice
-		local numSales = pricingData.numSales
-		local numDays = pricingData.numDays
-		local numItems = pricingData.numItems
-		local bonanzaPrice = pricingData.bonanzaPrice
-		local bonanzaSales = pricingData.bonanzaSales
-		local bonanzaCount = pricingData.bonanzaCount
+			local avgPrice = pricingData.avgPrice
+			local numSales = pricingData.numSales
+			local numDays = pricingData.numDays
+			local numItems = pricingData.numItems
+			local bonanzaPrice = pricingData.bonanzaPrice
+			local bonanzaSales = pricingData.bonanzaSales
+			local bonanzaCount = pricingData.bonanzaCount
 		
 		-- Sales Price
 		if avgPrice ~= nil then
@@ -105,14 +105,26 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
         -- Product Price
 		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
+			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
+				local productAvgPrice = productPricingData.avgPrice
+				local productNumSales = productPricingData.numSales
+				local productNumDays = productPricingData.numDays
+				local productNumItems = productPricingData.numItems
+				local productBonanzaPrice = productPricingData.bonanzaPrice
+				local productBonanzaSales = productPricingData.bonanzaSales
+				local productBonanzaCount = productPricingData.bonanzaCount
 			
-			local tipLine, avePrice, graphInfo = MasterMerchant:itemPriceTip(resultItemLink, false, false)
-			if(tipLine ~= nil) then
-				tooltip:AddLine(zo_strformat("|c7171d1Product <<1>>|r", tipLine))  
+			if productAvgPrice ~= nil then
+				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
+				if productNumSales > 1 then
+					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
+				else
+					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
+				end
 			else
 				tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
-		end
+		end	
 	end
 	
 	--------------------------------------------------
