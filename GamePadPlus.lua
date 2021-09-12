@@ -75,13 +75,13 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	
 	if GPP.settings.mm and MasterMerchant ~= nil then 
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
-			local avgPrice = pricingData.avgPrice
-			local numSales = pricingData.numSales
-			local numDays = pricingData.numDays
-			local numItems = pricingData.numItems
-			local bonanzaPrice = pricingData.bonanzaPrice
-			local bonanzaSales = pricingData.bonanzaSales
-			local bonanzaCount = pricingData.bonanzaCount
+		local avgPrice = pricingData.avgPrice
+		local numSales = pricingData.numSales
+		local numDays = pricingData.numDays
+		local numItems = pricingData.numItems
+		--local bonanzaPrice = pricingData.bonanzaPrice
+		--local bonanzaSales = pricingData.bonanzaSales
+		--local bonanzaCount = pricingData.bonanzaCount
 		
 		-- Sales Price
 		if avgPrice ~= nil then
@@ -95,6 +95,20 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
 		
+		-- Bonanza Price
+		--[[ Bonanza price not supported by MM alias commands at this time - 9/12/2021
+		if bonanzaPrice ~= nil then
+			bonanzaPriceFormatted = FormattedNumber(bonanzaPrice)
+			if bonanzaSales > 1 then
+				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listings/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
+			else
+				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listing/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
+			end
+		else
+			tooltip:AddLine(zo_strformat("|c7171d1No Bonanza price data|r"))
+		end
+		]]
+		
 		-- Crafting Cost
 		local craftCost = MasterMerchant:itemCraftPrice(itemLink)
 		if craftCost ~= nil then
@@ -106,13 +120,13 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
-				local productAvgPrice = productPricingData.avgPrice
-				local productNumSales = productPricingData.numSales
-				local productNumDays = productPricingData.numDays
-				local productNumItems = productPricingData.numItems
-				local productBonanzaPrice = productPricingData.bonanzaPrice
-				local productBonanzaSales = productPricingData.bonanzaSales
-				local productBonanzaCount = productPricingData.bonanzaCount
+			local productAvgPrice = productPricingData.avgPrice
+			local productNumSales = productPricingData.numSales
+			local productNumDays = productPricingData.numDays
+			local productNumItems = productPricingData.numItems
+			--local productBonanzaPrice = productPricingData.bonanzaPrice
+			--local productBonanzaSales = productPricingData.bonanzaSales
+			--local productBonanzaCount = productPricingData.bonanzaCount
 			
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
@@ -121,8 +135,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 				else
 					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
 				end
-			else
-				tooltip:AddLine(zo_strformat("|c7171d1No product data|r"))
 			end
 		end	
 	end
