@@ -2,9 +2,6 @@
 		GamePadPlus
 		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
-		
-		Based on RockingDice's GamePadBuddy (no longer maintained)
-		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
  ]]
  
 --------------------------------------------------
@@ -63,12 +60,12 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Arkadius' Trade Tools  |--
 	--------------------------------------------------
 
-	if GPP.settings.att and ArkadiusTradeTools ~= nil then
-		local ATTavgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
-		if(ATTavgPrice ~= nil or ATTavgPrice ~= 0) then
-			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", ATTavgPrice))
-		else
+	if GPP.settings.att and ArkadiusTradeTools then
+		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
+		if(avgPrice == nil or avgPrice == 0) then
 			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
+		else
+			tooltip:AddLine(zo_strformat("|cf58585ATT price (avg): <<1>>|r", avgPrice))
         end
 	end
 	
@@ -77,35 +74,35 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--------------------------------------------------
 	
 	if GPP.settings.mm and MasterMerchant ~= nil then 
-		local MMpricingData = MasterMerchant:itemStats(itemLink, false)
-		local MMavgPrice = MMpricingData.avgPrice
-		local MMnumSales = MMpricingData.numSales
-		local MMnumDays = MMpricingData.numDays
-		local MMnumItems = MMpricingData.numItems
-		--local MMbonanzaPrice = MMpricingData.bonanzaPrice
-		--local MMbonanzaSales = MMpricingData.bonanzaSales
-		--local MMbonanzaCount = MMpricingData.bonanzaCount
+		local pricingData = MasterMerchant:itemStats(itemLink, false)
+		local avgPrice = pricingData.avgPrice
+		local numSales = pricingData.numSales
+		local numDays = pricingData.numDays
+		local numItems = pricingData.numItems
+		--local bonanzaPrice = pricingData.bonanzaPrice
+		--local bonanzaSales = pricingData.bonanzaSales
+		--local bonanzaCount = pricingData.bonanzaCount
 		
 		-- Sales Price
-		if (MMavgPrice ~= nil or MMavgPrice ~= 0) then
-			MMavgPriceFormatted = FormattedNumber(MMavgPrice)
-			if MMnumSales > 1 then
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", MMnumSales, MMnumItems, MMnumDays, MMavgPriceFormatted))
+		if avgPrice ~= nil then
+			avgPriceFormatted = FormattedNumber(avgPrice)
+			if numSales > 1 then
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
 			else
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", MMnumSales, MMnumItems, MMnumDays, MMavgPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
 			end
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
 		
 		-- Bonanza Price
-		--[[ Bonanza price not supported by MM alias commands at this time (per Sharlikran 9/12/2021)
-		if MMbonanzaPrice ~= nil then
-			MMbonanzaPriceFormatted = FormattedNumber(MMbonanzaPrice)
+		--[[ Bonanza price not supported by MM alias commands at this time - 9/12/2021
+		if bonanzaPrice ~= nil then
+			bonanzaPriceFormatted = FormattedNumber(bonanzaPrice)
 			if bonanzaSales > 1 then
-				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listings/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", MMbonanzaSales, MMbonanzaCount, MMbonanzaPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listings/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
 			else
-				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listing/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", MMbonanzaSales, MMbonanzaCount, MMbonanzaPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listing/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
 			end
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1No Bonanza price data|r"))
@@ -113,23 +110,23 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		]]
 		
 		-- Crafting Cost
-		local MMcraftCost = MasterMerchant:itemCraftPrice(itemLink)
-		if MMcraftCost ~= nil then
-			MMcraftCostFormatted = FormattedNumber(MMcraftCost)
-			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", MMcraftCostFormatted))
+		local craftCost = MasterMerchant:itemCraftPrice(itemLink)
+		if craftCost ~= nil then
+			craftCostFormatted = FormattedNumber(craftCost)
+			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
 		end
 
         -- Product Price
 		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
-			local MMresultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
-			local productMMpricingData = MasterMerchant:itemStats(resultItemLink, false)
-			local productMMavgPrice = productPricingData.avgPrice
-			local productMMnumSales = productPricingData.numSales
-			local productMMnumDays = productPricingData.numDays
-			local productMMnumItems = productPricingData.numItems
-			--local productMMbonanzaPrice = productMMpricingData.bonanzaPrice
-			--local productMMbonanzaSales = productMMpricingData.bonanzaSales
-			--local productMMbonanzaCount = productMMpricingData.bonanzaCount
+			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
+			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
+			local productAvgPrice = productPricingData.avgPrice
+			local productNumSales = productPricingData.numSales
+			local productNumDays = productPricingData.numDays
+			local productNumItems = productPricingData.numItems
+			--local productBonanzaPrice = productPricingData.bonanzaPrice
+			--local productBonanzaSales = productPricingData.bonanzaSales
+			--local productBonanzaCount = productPricingData.bonanzaCount
 			
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
