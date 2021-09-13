@@ -65,7 +65,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		if(avgPrice == nil or avgPrice == 0) then
 			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
 		else
-			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPrice))
+			avgPriceFormatted = FormattedNumber(avgPrice)
+			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPriceFormatted))
         end
 	end
 	
