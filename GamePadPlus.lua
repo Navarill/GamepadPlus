@@ -32,7 +32,25 @@ function FormattedNumber(amount)
 		return ZO_CommaDelimitNumber(zo_floor(amount))
 	end
 
-	return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, .01))
+	--return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, .01))
+	local i, j, minus, int, fraction = tostring(amount):find('([-]?)(%d+)([.]?%d*)')
+	-- reverse the int-string and append a comma to all blocks of 3 digits
+	int = int:reverse():gsub("(%d%d%d)", "%1,")
+	-- reverse the int-string back remove an optional comma and put the
+	-- optional minus and fractional part back
+	return RoundNumber((minus .. int:reverse():gsub("^,", "") .. fraction), 2)
+end
+
+--------------------------------------------------
+--|  RoundNumber  |--
+--------------------------------------------------
+function RoundNumber(number, decimals)
+	if (number ~= nil or number ~= 0) and decimals ~= nil then
+		local power = 10^decimals
+    	return string.format("%.2f", math.floor(number * power) / power)
+    else
+    	return 0
+    end
 end
 
 --------------------------------------------------
