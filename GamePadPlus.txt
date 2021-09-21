@@ -6,7 +6,7 @@
 ## Author: Sidrinius
 ## Description: Gamepad UI enhancement
 ## Version: 1.0.0
-## APIVersion: 101031
+## APIVersion: 101031 101032
 ## AddOnVersion: 10000
 ## DependsOn: LibSavedVars LibAddonMenu-2.0
 ## SavedVariables: GamePadPlus_Account
