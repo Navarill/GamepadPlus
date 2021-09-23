@@ -80,7 +80,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 	if GPP.settings.att and ArkadiusTradeTools then
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
-		if(avgPrice == nil or avgPrice == 0) then
+		if (avgPrice == nil or avgPrice == 0) then
 			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
 		else
 			avgPriceFormatted = FormattedNumber(avgPrice)
