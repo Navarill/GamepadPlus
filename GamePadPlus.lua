@@ -2,12 +2,18 @@
 		GamePadPlus
 		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
+		
+		Based on RockingDice's GamePadBuddy
+		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
+		https://github.com/rockingdice/GamePadBuddy
  ]]
  
 --------------------------------------------------
 --|  Create Namespace  |--
 --------------------------------------------------
-if GamePadPlus == nil then GamePadPlus = {} end
+if GamePadPlus == nil then
+	GamePadPlus = {}
+end
 
 --------------------------------------------------
 --|  Initialize Variables  |--
@@ -28,16 +34,14 @@ function FormattedNumber(amount)
 		return tostring(0)
 	end
 	
+	-- No decimals for numbers greater than 100
 	if amount > 100 then
 		return ZO_CommaDelimitNumber(zo_floor(amount))
 	end
 
-	--return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, .01))
+	-- Numbers 100 and less are rounded to two decimal places
 	local i, j, minus, int, fraction = tostring(amount):find('([-]?)(%d+)([.]?%d*)')
-	-- reverse the int-string and append a comma to all blocks of 3 digits
 	int = int:reverse():gsub("(%d%d%d)", "%1,")
-	-- reverse the int-string back remove an optional comma and put the
-	-- optional minus and fractional part back
 	return RoundNumber((minus .. int:reverse():gsub("^,", "") .. fraction), 2)
 end
 
