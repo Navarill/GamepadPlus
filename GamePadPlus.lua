@@ -133,14 +133,16 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		]]
 		
 		-- Crafting Cost
-		local craftCost = MasterMerchant:itemCraftPrice(itemLink)
-		if craftCost ~= nil then
-			craftCostFormatted = FormattedNumber(craftCost)
-			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
+		if avgPrice ~= nil then
+			local craftCost = MasterMerchant:itemCraftPrice(itemLink)
+			if craftCost ~= nil then
+				craftCostFormatted = FormattedNumber(craftCost)
+				tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
+			end
 		end
 
         -- Product Price
-		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+		if GPP.settings.recipes and avgPrice ~= nil and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
 			local productAvgPrice = productPricingData.avgPrice
