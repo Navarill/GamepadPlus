@@ -267,10 +267,16 @@ function LoadModules()
 end
 
 --------------------------------------------------
+--|  ReloadTheUI  |--
+--------------------------------------------------
+function ReloadTheUI()
+	ReloadUI("ingame")
+end
+
+--------------------------------------------------
 --|  OnAddOnLoaded  |--
 --------------------------------------------------
 function GPP.OnAddOnLoaded(eventCode, addOnName)
-	
 	if (addOnName ~= GPP.name) then return end
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
 
@@ -283,6 +289,13 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 	end
 
 end
+
+--------------------------------------------------
+--|  Slash Commands  |--
+--------------------------------------------------
+SLASH_COMMANDS["/rl"] = ReloadTheUI
+SLASH_COMMANDS["/rlui"] = ReloadTheUI
+SLASH_COMMANDS["/reload"] = ReloadTheUI
 
 --------------------------------------------------
 --|  Register Events  |--
