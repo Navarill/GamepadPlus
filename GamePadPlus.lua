@@ -96,7 +96,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	--|  Master Merchant  |--
 	--------------------------------------------------
 	
-	if GPP.settings.mm and MasterMerchant ~= nil then 
+	--if GPP.settings.mm and MasterMerchant ~= nil then
+	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
 		local avgPrice = pricingData.avgPrice
 		local numSales = pricingData.numSales
