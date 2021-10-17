@@ -8,7 +8,7 @@
 ## Version: 1.0.0
 ## APIVersion: 101031 101032
 ## AddOnVersion: 10000
-## DependsOn: LibSavedVars LibAddonMenu-2.0
+## DependsOn: LibSavedVars>=50000 LibAddonMenu-2.0>=28
 ## SavedVariables: GamePadPlus_Account
 ## SavedVariables: GamePadPlus_Character
 
