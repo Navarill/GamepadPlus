@@ -9,6 +9,7 @@
 ## APIVersion: 101031 101032
 ## AddOnVersion: 10000
 ## DependsOn: LibSavedVars>=50000 LibAddonMenu-2.0>=28
+## OptionalDependsOn: pChat
 ## SavedVariables: GamePadPlus_Account
 ## SavedVariables: GamePadPlus_Character
 
