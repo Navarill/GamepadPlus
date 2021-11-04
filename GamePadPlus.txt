@@ -9,7 +9,7 @@
 ## APIVersion: 101032
 ## AddOnVersion: 10000
 ## DependsOn: LibSavedVars>=50000 LibAddonMenu-2.0>=28
-## OptionalDependsOn: pChat
+## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamePadPlus_Account
 ## SavedVariables: GamePadPlus_Character
 
