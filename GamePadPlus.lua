@@ -8,16 +8,12 @@
 		https://github.com/rockingdice/GamePadBuddy
  ]]
  
---------------------------------------------------
---|  Create Namespace  |--
---------------------------------------------------
+-- Create Namespace
 if GamePadPlus == nil then
 	GamePadPlus = {}
 end
 
---------------------------------------------------
---|  Initialize Variables  |--
---------------------------------------------------
+-- Initialize Variables
 local GPP = GamePadPlus
 
 GPP.name = "GamePadPlus"
@@ -26,9 +22,7 @@ GPP.author = "Sidrinius"
 GPP.version = "1.0.0"
 GPP.settings = {}
 
---------------------------------------------------
---|  FormattedNumber  |--
---------------------------------------------------
+-- FormattedNumber
 function FormattedNumber(amount)
 	if not amount then
 		return tostring(0)
@@ -45,9 +39,7 @@ function FormattedNumber(amount)
 	return RoundNumber((minus .. int:reverse():gsub("^,", "") .. fraction), 2)
 end
 
---------------------------------------------------
---|  RoundNumber  |--
---------------------------------------------------
+-- RoundNumber
 function RoundNumber(number, decimals)
 	if (number ~= nil or number ~= 0) and decimals ~= nil then
 		local power = 10^decimals
@@ -57,18 +49,13 @@ function RoundNumber(number, decimals)
     end
 end
 
---------------------------------------------------
---|  AddInventoryPreInfo  |--
---------------------------------------------------
+-- AddInventoryPreInfo
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
     local itemLink = GetItemLink(bagId, slotIndex)      
     local itemType, specializedItemType = GetItemLinkItemType(itemLink)
 
-	--------------------------------------------------
-	--|  Recipes  |--
-	--------------------------------------------------	
-    
+	-- Recipes
 	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 	
 		if(IsItemLinkRecipeKnown(itemLink)) then
@@ -78,10 +65,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
-	--------------------------------------------------
-	--|  Arkadius' Trade Tools  |--
-	--------------------------------------------------
-
+	-- Arkadius' Trade Tools
 	if GPP.settings.att and ArkadiusTradeTools then
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
 		if (avgPrice == nil or avgPrice == 0) then
@@ -92,11 +76,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
         end
 	end
 	
-	--------------------------------------------------
-	--|  Master Merchant  |--
-	--------------------------------------------------
-	
-	--if GPP.settings.mm and MasterMerchant ~= nil then
+	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
 		local avgPrice = pricingData.avgPrice
@@ -120,7 +100,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 		
 		-- Bonanza Price
-		--[[ Bonanza price not supported by MM alias commands at this time - 9/12/2021
+		--[[ Bonanza price not supported by MM alias commands at this time - Sharlikran 9/12/2021
 		if bonanzaPrice ~= nil then
 			bonanzaPriceFormatted = FormattedNumber(bonanzaPrice)
 			if bonanzaSales > 1 then
@@ -165,9 +145,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end	
 	end
 	
-	--------------------------------------------------
-	--|  Tamriel Trade Centre  |--
-	--------------------------------------------------
+	-- Tamriel Trade Centre
     if GPP.settings.ttc and TamrielTradeCentre ~= nil then
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
@@ -226,9 +204,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
     end
 end
 
---------------------------------------------------
---|  InventoryHook  |--
---------------------------------------------------
+-- InventoryHook
 function InventoryHook(tooltip, method)
   local origMethod = tooltip[method]
   tooltip[method] = function(control, bagId, slotIndex, ...) 
@@ -237,9 +213,7 @@ function InventoryHook(tooltip, method)
   end
 end
 
---------------------------------------------------
---|  InventoryMenuHook  |--
---------------------------------------------------
+-- InventoryMenuHook
 function InventoryMenuHook(tooltip, method) 
   local origMethod = tooltip[method]
   tooltip[method] = function(selectedData, ...) 
@@ -251,9 +225,7 @@ function InventoryMenuHook(tooltip, method)
   end
 end
 
---------------------------------------------------
---|  LoadModules  |--
---------------------------------------------------
+-- LoadModules
 function LoadModules() 
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
@@ -267,16 +239,12 @@ function LoadModules()
 
 end
 
---------------------------------------------------
---|  ReloadTheUI  |--
---------------------------------------------------
+-- ReloadTheUI
 function ReloadTheUI()
 	ReloadUI("ingame")
 end
 
---------------------------------------------------
---|  OnAddOnLoaded  |--
---------------------------------------------------
+-- OnAddOnLoaded
 function GPP.OnAddOnLoaded(eventCode, addOnName)
 	if (addOnName ~= GPP.name) then return end
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
@@ -291,15 +259,11 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 
 end
 
---------------------------------------------------
---|  Slash Commands  |--
---------------------------------------------------
+-- Slash Commands
 SLASH_COMMANDS["/rl"] = ReloadTheUI
 SLASH_COMMANDS["/rlui"] = ReloadTheUI
 SLASH_COMMANDS["/reload"] = ReloadTheUI
 
---------------------------------------------------
---|  Register Events  |--
---------------------------------------------------
+-- Register Events
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_GAMEPAD_PREFERRED_MODE_CHANGED, function(code, inGamepad) LoadModules() end)

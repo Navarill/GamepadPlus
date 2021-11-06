@@ -15,41 +15,32 @@ function GamePadPlus:SettingsSetup()
 
 	GPP.defaults = {
 		invtooltip = true,
+		recipes = false,
 		att = false,
 		mm = false,
-		recipes = false,
 		ttc = false,
 	}
 	
-	--------------------------------------------------
-	--|  Initialize saved variables  |--
-	--------------------------------------------------
+	-- Initialize saved variables
 	GPP.settings = LibSavedVars
 		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
 		:AddCharacterSettingsToggle(GPP.name .. "_Character")
 	
-	--------------------------------------------------
-	--|  Settings panel  |--
-	--------------------------------------------------
-
+	-- Settings panel
 	local panelData = {
     	type = "panel",
     	name = GPP.title,
     	displayName = GPP.title,
     	author = GPP.author,
         version = GPP.version,
-        -- slashCommand = "/gpp",
         registerForRefresh = true,
         registerForDefaults = true,
-        -- website = "insert URL here",
 	}
 
 	LAM:RegisterAddonPanel(GPP.name, panelData)
 	
-	--------------------------------------------------
-	--|  Options table  |--
-	--------------------------------------------------
 
+	-- Options table
 	local optionsTable = {
 	
 		-- Account-wide settings
