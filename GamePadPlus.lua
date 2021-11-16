@@ -57,7 +57,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 	-- Recipes
 	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
-	
 		if(IsItemLinkRecipeKnown(itemLink)) then
 			tooltip:AddLine(GetString(SI_RECIPE_ALREADY_KNOWN))
 		else
@@ -206,27 +205,26 @@ end
 
 -- InventoryHook
 function InventoryHook(tooltip, method)
-  local origMethod = tooltip[method]
-  tooltip[method] = function(control, bagId, slotIndex, ...) 
-    AddInventoryPreInfo(control, bagId, slotIndex, ...)
-    origMethod(control, bagId, slotIndex, ...)            
-  end
+	local origMethod = tooltip[method]
+	tooltip[method] = function(control, bagId, slotIndex, ...)
+		AddInventoryPreInfo(control, bagId, slotIndex, ...)
+		origMethod(control, bagId, slotIndex, ...)
+	end
 end
 
 -- InventoryMenuHook
-function InventoryMenuHook(tooltip, method) 
-  local origMethod = tooltip[method]
-  tooltip[method] = function(selectedData, ...) 
-    origMethod(selectedData, ...)  
-	if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
-		GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_WORN, tooltip.selectedEquipSlot)
+function InventoryMenuHook(tooltip, method)
+	local origMethod = tooltip[method]
+	tooltip[method] = function(selectedData, ...)
+		origMethod(selectedData, ...)
+		if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
+			GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_WORN, tooltip.selectedEquipSlot)
+		end
 	end
-	  
-  end
 end
 
 -- LoadModules
-function LoadModules() 
+function LoadModules()
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
 	InventoryMenuHook(GAMEPAD_INVENTORY, "UpdateCategoryLeftTooltip")
@@ -234,9 +232,7 @@ function LoadModules()
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_MOVABLE_TOOLTIP), "LayoutBagItem")
 
 	_initialized = true
-	
 	end
-
 end
 
 -- ReloadTheUI
@@ -250,13 +246,12 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
 
 	GPP:SettingsSetup()
-	
+
 	if(IsInGamepadPreferredMode()) then
 		LoadModules()
 	else
 		_initialized = false
 	end
-
 end
 
 -- Slash Commands
