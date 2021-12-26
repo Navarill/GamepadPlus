@@ -28,12 +28,12 @@ function FormattedNumber(amount)
 		return tostring(0)
 	end
 	
-	-- No decimals for numbers greater than 100
-	if amount > 100 then
+	-- No decimals for numbers 100 or greater
+	if amount >= 100 then
 		return ZO_CommaDelimitNumber(zo_floor(amount))
 	end
 
-	-- Numbers 100 and less are rounded to two decimal places
+	-- Numbers less than 100 are rounded to two decimal places
 	local i, j, minus, int, fraction = tostring(amount):find('([-]?)(%d+)([.]?%d*)')
 	int = int:reverse():gsub("(%d%d%d)", "%1,")
 	return RoundNumber((minus .. int:reverse():gsub("^,", "") .. fraction), 2)
