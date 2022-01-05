@@ -235,10 +235,12 @@ function LoadModules()
 	end
 end
 
+--[[
 -- ReloadTheUI
 function ReloadTheUI()
 	ReloadUI("ingame")
 end
+]]--
 
 -- OnAddOnLoaded
 function GPP.OnAddOnLoaded(eventCode, addOnName)
@@ -255,9 +257,11 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 end
 
 -- Slash Commands
+--[[
 SLASH_COMMANDS["/rl"] = ReloadTheUI
 SLASH_COMMANDS["/rlui"] = ReloadTheUI
 SLASH_COMMANDS["/reload"] = ReloadTheUI
+]]--
 
 -- Register Events
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
