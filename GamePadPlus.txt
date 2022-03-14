@@ -5,9 +5,9 @@
 ## Title: GamePadPlus
 ## Author: Sidrinius
 ## Description: Gamepad UI enhancement
-## Version: 1.0.0
-## APIVersion: 101032 101033
-## AddOnVersion: 10000
+## Version: 1.0.1
+## APIVersion: 101033
+## AddOnVersion: 10001
 ## DependsOn: LibSavedVars>=50000 LibAddonMenu-2.0>=28
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamePadPlus_Account
