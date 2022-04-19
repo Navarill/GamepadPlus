@@ -19,7 +19,7 @@ local GPP = GamePadPlus
 GPP.name = "GamePadPlus"
 GPP.title = "GamePad Plus"
 GPP.author = "Sidrinius"
-GPP.version = "1.0.1"
+GPP.version = "1.0.2"
 GPP.settings = {}
 
 -- FormattedNumber
