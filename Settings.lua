@@ -1,5 +1,5 @@
 --[[
-		GamePadPlus
+		GamepadPlus
 		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
 		
@@ -8,9 +8,9 @@
 		https://github.com/rockingdice/GamePadBuddy
  ]]
 
-function GamePadPlus:SettingsSetup()
+function GamepadPlus:SettingsSetup()
 
-	local GPP = GamePadPlus
+	local GPP = GamepadPlus
 	local LAM = LibAddonMenu2
 
 	GPP.defaults = {
