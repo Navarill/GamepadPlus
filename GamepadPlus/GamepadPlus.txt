@@ -1,13 +1,13 @@
-## Title: GamePadPlus
+## Title: GamepadPlus
 ## Description: Gamepad UI enhancement
-## Author: Sidrinius
-## Version: 1.0.3
-## APIVersion: 101034
-## AddOnVersion: 10003
-## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=33
+## Author: Navarill
+## Version: 1.1.0
+## APIVersion: 101035 101036
+## AddOnVersion: 10100
+## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
-## SavedVariables: GamePadPlus_Account
-## SavedVariables: GamePadPlus_Character
+## SavedVariables: GamepadPlus_Account
+## SavedVariables: GamepadPlus_Character
 
 ## This Add-On is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 
 ## The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in
@@ -15,5 +15,5 @@
 
 ## The Add-on Terms of Use can be viewed at https://account.elderscrollsonline.com/add-on-terms.
 
-GamePadPlus.lua
+GamepadPlus.lua
 Settings.lua

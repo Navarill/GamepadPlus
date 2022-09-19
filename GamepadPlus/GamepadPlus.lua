@@ -1,5 +1,5 @@
 --[[
-		GamePadPlus
+		GamepadPlus
 		Gamepad UI enhancement for The Elder Scrolls Online
 		License: The MIT License
 		
@@ -9,17 +9,17 @@
  ]]
  
 -- Create Namespace
-if GamePadPlus == nil then
-	GamePadPlus = {}
+if GamepadPlus == nil then
+	GamepadPlus = {}
 end
 
 -- Initialize Variables
-local GPP = GamePadPlus
+local GPP = GamepadPlus
 
-GPP.name = "GamePadPlus"
-GPP.title = "GamePad Plus"
-GPP.author = "Sidrinius"
-GPP.version = "1.0.3"
+GPP.name = "GamepadPlus"
+GPP.title = "Gamepad Plus"
+GPP.author = "Navarill"
+GPP.version = "1.1.0"
 GPP.settings = {}
 
 -- FormattedNumber

@@ -1,2 +1,2 @@
-# GamePadPlus
- Enhancement for ESO GamePad UI
+# GamepadPlus
+ Gamepad UI enhancement for The Elder Scrolls Online
