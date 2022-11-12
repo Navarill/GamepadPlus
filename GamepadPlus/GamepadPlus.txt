@@ -11,7 +11,7 @@
 ## Version: 2.0.0
 ## APIVersion: 101036
 ## AddOnVersion: 20000
-## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
+## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=28
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Account
 ## SavedVariables: GamepadPlus_Character
