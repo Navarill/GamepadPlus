@@ -4,18 +4,16 @@
 
 ; The Add-on Terms of Use can be viewed at https://account.elderscrollsonline.com/add-on-terms.
 
-
 ## Title: GamepadPlus
 ## Description: Gamepad UI enhancement
 ## Author: Navarill
-## Version: 2.0.0
+## Version: 230518
 ## APIVersion: 101037 101038
-## AddOnVersion: 20000
+## AddOnVersion: 230518
 ## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=28
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Account
 ## SavedVariables: GamepadPlus_Character
-
 
 GamepadPlus.lua
 Settings.lua
