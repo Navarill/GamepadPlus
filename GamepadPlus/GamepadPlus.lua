@@ -1,8 +1,7 @@
 --[[
 		GamepadPlus
 		Gamepad UI enhancement for The Elder Scrolls Online
-		License: The MIT License
-		
+		License: (To Be Determined)
 		Based on RockingDice's GamePadBuddy
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
 		https://github.com/rockingdice/GamePadBuddy
