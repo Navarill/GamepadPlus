@@ -55,8 +55,8 @@ function GamepadPlus:SettingsSetup()
 		-- Checkbox for Inventory Tooltip
         {
             type = "checkbox",
-            name = "Inventory Tooltip",
-            tooltip = "Show inventory tooltip info",
+            name = "Equipped Inventory Tooltip",
+            tooltip = "Show equipped inventory tooltip info",
             getFunc = function() return GPP.settings.invtooltip end,
             setFunc = function(value) GPP.settings.invtooltip = value end,
             width = "full",
