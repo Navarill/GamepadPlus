@@ -18,7 +18,7 @@ local GPP = GamepadPlus
 GPP.name = "GamepadPlus"
 GPP.title = "Gamepad Plus"
 GPP.author = "Navarill"
-GPP.version = "230518"
+GPP.version = "2.0.0"
 GPP.settings = {}
 
 -- FormattedNumber
@@ -73,7 +73,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPriceFormatted))
         end
 	end
-	
+
 	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
@@ -84,7 +84,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		--local bonanzaPrice = pricingData.bonanzaPrice
 		--local bonanzaSales = pricingData.bonanzaSales
 		--local bonanzaCount = pricingData.bonanzaCount
-		
+
 		-- Sales Price
 		if avgPrice ~= nil then
 			avgPriceFormatted = FormattedNumber(avgPrice)
@@ -96,7 +96,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
-		
+
 		-- Bonanza Price
 		--[[ Bonanza price not supported by MM alias commands at this time - Sharlikran 9/12/2021
 		if bonanzaPrice ~= nil then
@@ -110,7 +110,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|c7171d1No Bonanza price data|r"))
 		end
 		]]
-		
+
 		-- Crafting Cost
 		if avgPrice ~= nil then
 			local craftCost = MasterMerchant:itemCraftPrice(itemLink)
@@ -131,7 +131,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			--local productBonanzaPrice = productPricingData.bonanzaPrice
 			--local productBonanzaSales = productPricingData.bonanzaSales
 			--local productBonanzaCount = productPricingData.bonanzaCount
-			
+
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
 				if productNumSales > 1 then
@@ -140,61 +140,61 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
 				end
 			end
-		end	
+		end
 	end
-	
+
 	-- Tamriel Trade Centre
     if GPP.settings.ttc and TamrielTradeCentre ~= nil then
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
-    
+
         if (priceInfo == nil) then
 			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
         else
           if (priceInfo.SuggestedPrice ~= nil) then
-			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY), 
+			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
               TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
           end
 
-          if (true) then 
-			tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg), 
-              TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max)))) 
+          if (true) then
+			tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
+              TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
           end
 
           if (true) then
-            if (priceInfo.EntryCount ~= priceInfo.AmountCount) then 
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount)))) 
+            if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
+				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
               tooltip:AddLine()
             else
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount)))) 
+				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
             end
           end
         end
- 
+
         if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
-		
+
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
-		
+
 		    if (priceInfo == nil) then
 				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
 			else
 			  if (priceInfo.SuggestedPrice ~= nil) then
-				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY), 
+				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
 				  TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
 			  end
 
-			  if (true) then 
-				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg), 
-				  TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max)))) 
+			  if (true) then
+				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
+				  TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
 			  end
 
 			  if (true) then
-				if (priceInfo.EntryCount ~= priceInfo.AmountCount) then 
-					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount)))) 
+				if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
+					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
 				  tooltip:AddLine()
 				else
-					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount)))) 
+					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
 				end
 			  end
 			end
@@ -222,24 +222,29 @@ function InventoryMenuHook(tooltip, method)
 	end
 end
 
+-- InventoryCompanionMenuHook
+function InventoryCompanionMenuHook(tooltip, method)
+	local origMethod = tooltip[method]
+	tooltip[method] = function(selectedData, ...)
+		origMethod(selectedData, ...)
+		if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
+			GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_COMPANION_WORN, tooltip.selectedEquipSlot)
+		end
+	end
+end
+
 -- LoadModules
 function LoadModules()
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
 	InventoryMenuHook(GAMEPAD_INVENTORY, "UpdateCategoryLeftTooltip")
+	InventoryCompanionMenuHook(COMPANION_EQUIPMENT_GAMEPAD, "UpdateCategoryLeftTooltip")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_RIGHT_TOOLTIP), "LayoutBagItem")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_MOVABLE_TOOLTIP), "LayoutBagItem")
 
 	_initialized = true
 	end
 end
-
---[[
--- ReloadTheUI
-function ReloadTheUI()
-	ReloadUI("ingame")
-end
-]]--
 
 -- OnAddOnLoaded
 function GPP.OnAddOnLoaded(eventCode, addOnName)
@@ -254,13 +259,6 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 		_initialized = false
 	end
 end
-
--- Slash Commands
---[[
-SLASH_COMMANDS["/rl"] = ReloadTheUI
-SLASH_COMMANDS["/rlui"] = ReloadTheUI
-SLASH_COMMANDS["/reload"] = ReloadTheUI
-]]--
 
 -- Register Events
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
