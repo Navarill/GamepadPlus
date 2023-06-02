@@ -12,8 +12,7 @@
 ## AddOnVersion: 020000
 ## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
-## SavedVariables: GamepadPlus_Account
-## SavedVariables: GamepadPlus_Character
+## SavedVariables: GamepadPlus_Data
 
 GamepadPlus.lua
 Settings.lua
