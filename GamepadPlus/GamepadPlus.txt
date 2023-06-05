@@ -8,7 +8,7 @@
 ## Description: Gamepad UI enhancement
 ## Author: Navarill
 ## Version: 2.0.0
-## APIVersion: 101037 101038
+## APIVersion: 101038
 ## AddOnVersion: 020000
 ## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
