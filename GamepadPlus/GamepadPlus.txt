@@ -1,18 +1,18 @@
-; This Add-On is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 
-; The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in
-; the United States and/or other countries. All rights reserved.
-
-; The Add-on Terms of Use can be viewed at https://account.elderscrollsonline.com/add-on-terms.
-
 ## Title: GamepadPlus
 ## Description: Gamepad UI enhancement
 ## Author: Navarill
 ## Version: 2.0.0
 ## APIVersion: 101038
 ## AddOnVersion: 020000
-## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
+## DependsOn: LibSavedVars LibAddonMenu-2.0
 ## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Data
 
 GamepadPlus.lua
 Settings.lua
+
+; This Add-On is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates. 
+; The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in
+; the United States and/or other countries. All rights reserved.
+
+; The Add-on Terms of Use can be viewed at https://account.elderscrollsonline.com/add-on-terms.
