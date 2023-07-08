@@ -20,12 +20,12 @@ function GamepadPlus:SettingsSetup()
 		mm = false,
 		ttc = false,
 	}
-	
+
 	-- Initialize saved variables
 	GPP.settings = LibSavedVars
 		:NewAccountWide(GPP.name .. "_Data", GPP.defaults)
 		:AddCharacterSettingsToggle(GPP.name .. "_Data")
-	
+
 	-- Settings panel
 	local panelData = {
     	type = "panel",
@@ -38,11 +38,10 @@ function GamepadPlus:SettingsSetup()
 	}
 
 	LAM:RegisterAddonPanel(GPP.name, panelData)
-	
 
 	-- Options table
 	local optionsTable = {
-	
+
 		-- Account-wide settings
         GPP.settings:GetLibAddonMenuAccountCheckbox(),
 
@@ -62,7 +61,7 @@ function GamepadPlus:SettingsSetup()
             width = "full",
             default = GPP.defaults.invtooltip,
         },
-		
+
 		-- Checkbox Recipes
         {
             type = "checkbox",
@@ -73,7 +72,7 @@ function GamepadPlus:SettingsSetup()
             width = "full",
             default = GPP.defaults.recipes,
         },
-		
+
 		-- Divider
 		{
 			type = "divider",

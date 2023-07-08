@@ -6,7 +6,7 @@
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
 		https://github.com/rockingdice/GamePadBuddy
  ]]
- 
+
 -- Create Namespace
 if GamepadPlus == nil then
 	GamepadPlus = {}
@@ -26,7 +26,7 @@ function FormattedNumber(amount)
 	if not amount then
 		return tostring(0)
 	end
-	
+
 	-- No decimals for numbers 100 or greater
 	if amount >= 100 then
 		return ZO_CommaDelimitNumber(zo_floor(amount))
@@ -51,7 +51,7 @@ end
 -- AddInventoryPreInfo
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
-    local itemLink = GetItemLink(bagId, slotIndex)      
+    local itemLink = GetItemLink(bagId, slotIndex)
     local itemType, specializedItemType = GetItemLinkItemType(itemLink)
 
 	-- Recipes
@@ -81,9 +81,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		local numSales = pricingData.numSales
 		local numDays = pricingData.numDays
 		local numItems = pricingData.numItems
-		--local bonanzaPrice = pricingData.bonanzaPrice
-		--local bonanzaSales = pricingData.bonanzaSales
-		--local bonanzaCount = pricingData.bonanzaCount
 
 		-- Sales Price
 		if avgPrice ~= nil then
@@ -96,20 +93,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
 		end
-
-		-- Bonanza Price
-		--[[ Bonanza price not supported by MM alias commands at this time - Sharlikran 9/12/2021
-		if bonanzaPrice ~= nil then
-			bonanzaPriceFormatted = FormattedNumber(bonanzaPrice)
-			if bonanzaSales > 1 then
-				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listings/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
-			else
-				tooltip:AddLine(zo_strformat("|c7171d1Bonanza price (<<1>> listing/<<2>> items): <<3>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", bonanzaSales, bonanzaCount, bonanzaPriceFormatted))
-			end
-		else
-			tooltip:AddLine(zo_strformat("|c7171d1No Bonanza price data|r"))
-		end
-		]]
 
 		-- Crafting Cost
 		if avgPrice ~= nil then
@@ -128,9 +111,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local productNumSales = productPricingData.numSales
 			local productNumDays = productPricingData.numDays
 			local productNumItems = productPricingData.numItems
-			--local productBonanzaPrice = productPricingData.bonanzaPrice
-			--local productBonanzaSales = productPricingData.bonanzaSales
-			--local productBonanzaCount = productPricingData.bonanzaCount
 
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
