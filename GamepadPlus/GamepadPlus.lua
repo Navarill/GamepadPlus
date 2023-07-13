@@ -7,45 +7,26 @@
 		https://github.com/rockingdice/GamePadBuddy
  ]]
 
--- Create Namespace
-if GamepadPlus == nil then
-	GamepadPlus = {}
-end
-
--- Initialize Variables
+GamepadPlus = {}
 local GPP = GamepadPlus
 
+GPP.settings = {}
 GPP.name = "GamepadPlus"
 GPP.title = "Gamepad Plus"
 GPP.author = "Navarill"
 GPP.version = "2.1.0"
-GPP.settings = {}
 
--- FormattedNumber
-function FormattedNumber(amount)
-	if not amount then
-		return tostring(0)
-	end
+-- FormattedCurrency
+function FormattedCurrency(amount)
 
 	-- No decimals for numbers 100 or greater
 	if amount >= 100 then
 		return ZO_CommaDelimitNumber(zo_floor(amount))
-	end
 
 	-- Numbers less than 100 are rounded to two decimal places
-	local i, j, minus, int, fraction = tostring(amount):find('([-]?)(%d+)([.]?%d*)')
-	int = int:reverse():gsub("(%d%d%d)", "%1,")
-	return RoundNumber((minus .. int:reverse():gsub("^,", "") .. fraction), 2)
-end
-
--- RoundNumber
-function RoundNumber(number, decimals)
-	if (number ~= nil or number ~= 0) and decimals ~= nil then
-		local power = 10^decimals
-    	return string.format("%.2f", math.floor(number * power) / power)
-    else
-    	return 0
-    end
+	else
+		return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, 0.01))
+	end
 end
 
 -- AddInventoryPreInfo
@@ -69,7 +50,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		if (avgPrice == nil or avgPrice == 0) then
 			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
 		else
-			avgPriceFormatted = FormattedNumber(avgPrice)
+			avgPriceFormatted = FormattedCurrency(avgPrice)
 			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPriceFormatted))
         end
 	end
@@ -84,11 +65,15 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 		-- Sales Price
 		if avgPrice ~= nil then
-			avgPriceFormatted = FormattedNumber(avgPrice)
+			avgPriceFormatted = FormattedCurrency(avgPrice)
+			numSalesFormatted = ZO_CommaDelimitNumber(zo_floor(numSales))
+			numDaysFormatted = ZO_CommaDelimitNumber(zo_floor(numDays))
+			numItemsFormatted = ZO_CommaDelimitNumber(zo_floor(numItems))
+
 			if numSales > 1 then
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
 			else
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSales, numItems, numDays, avgPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
 			end
 		else
 			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
@@ -98,7 +83,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		if avgPrice ~= nil then
 			local craftCost = MasterMerchant:itemCraftPrice(itemLink)
 			if craftCost ~= nil then
-				craftCostFormatted = FormattedNumber(craftCost)
+				craftCostFormatted = FormattedCurrency(craftCost)
 				tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
 			end
 		end
@@ -113,7 +98,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local productNumItems = productPricingData.numItems
 
 			if productAvgPrice ~= nil then
-				productAvgPriceFormatted = FormattedNumber(productAvgPrice)
+				productAvgPriceFormatted = FormattedCurrency(productAvgPrice)
 				if productNumSales > 1 then
 					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
 				else
