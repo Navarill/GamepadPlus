@@ -16,20 +16,18 @@ GPP.title = "Gamepad Plus"
 GPP.author = "Navarill"
 GPP.version = "2.1.0"
 
--- FormattedCurrency
 function FormattedCurrency(amount)
 
-	-- No decimals for numbers 100 or greater
-	if amount >= 100 then
-		return ZO_CommaDelimitNumber(zo_floor(amount))
-
-	-- Numbers less than 100 are rounded to two decimal places
-	else
+	-- Currency values less than 100 are rounded to two decimal places
+	if amount < 100 then
 		return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, 0.01))
+
+	-- No decimals for currency values 100 or greater
+	else
+		return ZO_CommaDelimitNumber(zo_floor(amount))
 	end
 end
 
--- AddInventoryPreInfo
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
     local itemLink = GetItemLink(bagId, slotIndex)
@@ -167,7 +165,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
     end
 end
 
--- InventoryHook
 function InventoryHook(tooltip, method)
 	local origMethod = tooltip[method]
 	tooltip[method] = function(control, bagId, slotIndex, ...)
@@ -176,7 +173,6 @@ function InventoryHook(tooltip, method)
 	end
 end
 
--- InventoryMenuHook
 function InventoryMenuHook(tooltip, method)
 	local origMethod = tooltip[method]
 	tooltip[method] = function(selectedData, ...)
@@ -187,7 +183,6 @@ function InventoryMenuHook(tooltip, method)
 	end
 end
 
--- InventoryCompanionMenuHook
 function InventoryCompanionMenuHook(tooltip, method)
 	local origMethod = tooltip[method]
 	tooltip[method] = function(selectedData, ...)
@@ -198,7 +193,6 @@ function InventoryCompanionMenuHook(tooltip, method)
 	end
 end
 
--- LoadModules
 function LoadModules()
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
@@ -211,7 +205,6 @@ function LoadModules()
 	end
 end
 
--- OnAddOnLoaded
 function GPP.OnAddOnLoaded(eventCode, addOnName)
 	if (addOnName ~= GPP.name) then return end
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
@@ -225,6 +218,5 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 	end
 end
 
--- Register Events
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_GAMEPAD_PREFERRED_MODE_CHANGED, function(code, inGamepad) LoadModules() end)
