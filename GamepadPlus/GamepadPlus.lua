@@ -5,7 +5,7 @@
 		Based on RockingDice's GamePadBuddy
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
 		https://github.com/rockingdice/GamePadBuddy
- ]]
+]]
 
 GamepadPlus = {}
 local GPP = GamepadPlus
@@ -17,10 +17,10 @@ GPP.author = "Navarill"
 GPP.version = "2.1.0"
 
 function FormattedCurrency(amount)
-
 	-- Currency values less than 100 are rounded to two decimal places
 	if amount < 100 then
-		return ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, 0.01))
+		amount = ZO_CommaDelimitDecimalNumber(zo_roundToNearest(amount, 0.01))
+		return string.format("%.2f", amount)
 
 	-- No decimals for currency values 100 or greater
 	else
@@ -29,7 +29,6 @@ function FormattedCurrency(amount)
 end
 
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
-
     local itemLink = GetItemLink(bagId, slotIndex)
     local itemType, specializedItemType = GetItemLinkItemType(itemLink)
 
@@ -46,11 +45,11 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	if GPP.settings.att and ArkadiusTradeTools then
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
 		if (avgPrice == nil or avgPrice == 0) then
-			tooltip:AddLine(zo_strformat("|cf58585ATT No listing data|r"))
+			return
 		else
 			avgPriceFormatted = FormattedCurrency(avgPrice)
 			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPriceFormatted))
-        end
+		end
 	end
 
 	-- Master Merchant
@@ -62,23 +61,21 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		local numItems = pricingData.numItems
 
 		-- Sales Price
-		if avgPrice ~= nil then
+		if (avgPrice == nil or avgPrice == 0) then
+			return
+		else
 			avgPriceFormatted = FormattedCurrency(avgPrice)
 			numSalesFormatted = ZO_CommaDelimitNumber(zo_floor(numSales))
 			numDaysFormatted = ZO_CommaDelimitNumber(zo_floor(numDays))
 			numItemsFormatted = ZO_CommaDelimitNumber(zo_floor(numItems))
 
-			if numSales > 1 then
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
-			else
-				tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
-			end
-		else
-			tooltip:AddLine(zo_strformat("|c7171d1MM No listing data|r"))
+			tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
 		end
 
 		-- Crafting Cost
-		if avgPrice ~= nil then
+		if (avgPrice == nil or avgPrice == 0) then
+			return
+		else
 			local craftCost = MasterMerchant:itemCraftPrice(itemLink)
 			if craftCost ~= nil then
 				craftCostFormatted = FormattedCurrency(craftCost)
@@ -97,11 +94,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedCurrency(productAvgPrice)
-				if productNumSales > 1 then
-					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sales/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
-				else
-					tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1>> sale/<<2>> items, <<3>> days): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
-				end
+				tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
 			end
 		end
 	end
@@ -112,7 +105,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
 
         if (priceInfo == nil) then
-			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
+			--tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
+			return
         else
           if (priceInfo.SuggestedPrice ~= nil) then
 			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
@@ -135,7 +129,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
         end
 
         if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
-
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
 
@@ -200,7 +193,6 @@ function LoadModules()
 	InventoryCompanionMenuHook(COMPANION_EQUIPMENT_GAMEPAD, "UpdateCategoryLeftTooltip")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_RIGHT_TOOLTIP), "LayoutBagItem")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_MOVABLE_TOOLTIP), "LayoutBagItem")
-
 	_initialized = true
 	end
 end
