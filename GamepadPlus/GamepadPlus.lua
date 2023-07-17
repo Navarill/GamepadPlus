@@ -1,6 +1,6 @@
 --[[
 		GamepadPlus
-		Gamepad UI enhancement for The Elder Scrolls Online
+		Gamepad UI enhancement for market data
 		License: (To Be Determined)
 		Based on RockingDice's GamePadBuddy
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
@@ -193,6 +193,7 @@ function LoadModules()
 	InventoryCompanionMenuHook(COMPANION_EQUIPMENT_GAMEPAD, "UpdateCategoryLeftTooltip")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_RIGHT_TOOLTIP), "LayoutBagItem")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_MOVABLE_TOOLTIP), "LayoutBagItem")
+
 	_initialized = true
 	end
 end
