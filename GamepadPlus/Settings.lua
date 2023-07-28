@@ -15,6 +15,7 @@ function GamepadPlus:SettingsSetup()
 		invtooltip = true,
 		recipes = true,
 		att = false,
+        eth = false,
 		mm = false,
 		ttc = false,
 	}
@@ -86,6 +87,17 @@ function GamepadPlus:SettingsSetup()
             setFunc = function(value) GPP.settings.att = value end,
             width = "full",
             default = GPP.defaults.att,
+        },
+
+        -- Checkbox for ESO Trading Hub
+        {
+            type = "checkbox",
+            name = "ESO Trading Hub",
+            tooltip = "Show pricing info from ESO Trading Hub",
+            getFunc = function() return GPP.settings.eth end,
+            setFunc = function(value) GPP.settings.eth = value end,
+            width = "full",
+            default = GPP.defaults.eth,
         },
 
 		-- Checkbox for Master Merchant

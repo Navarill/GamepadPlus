@@ -11,7 +11,7 @@
 ## APIVersion: 101038 101039
 ## AddOnVersion: 020100
 ## DependsOn: LibSavedVars LibAddonMenu-2.0
-## OptionalDependsOn: ArkadiusTradeTools MasterMerchant TamrielTradeCentre
+## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Data
 
 GamepadPlus.lua
