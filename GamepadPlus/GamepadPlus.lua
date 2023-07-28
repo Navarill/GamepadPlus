@@ -1,6 +1,6 @@
 --[[
 		GamepadPlus
-		Gamepad UI enhancement for market data
+		Gamepad UI enhancement for display of market data
 		License: (To Be Determined)
 		Based on RockingDice's GamePadBuddy
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
@@ -29,8 +29,9 @@ function FormattedCurrency(amount)
 end
 
 function AddInventoryPreInfo(tooltip, bagId, slotIndex)
-    local itemLink = GetItemLink(bagId, slotIndex)
-    local itemType, specializedItemType = GetItemLinkItemType(itemLink)
+	local itemLink = GetItemLink(bagId, slotIndex)
+	local itemType, specializedItemType = GetItemLinkItemType(itemLink)
+	goldSymbol = "|t16:16:EsoUI/Art/currency/currency_gold.dds|t"
 
 	-- Recipes
 	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
@@ -48,7 +49,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			return
 		else
 			avgPriceFormatted = FormattedCurrency(avgPrice)
-			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", avgPriceFormatted))
+			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>><<2>> |r", avgPriceFormatted, goldSymbol))
 		end
 	end
 
@@ -69,21 +70,32 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			numDaysFormatted = ZO_CommaDelimitNumber(zo_floor(numDays))
 			numItemsFormatted = ZO_CommaDelimitNumber(zo_floor(numItems))
 
-			tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted))
+			tooltip:AddLine(zo_strformat("|c7171d1MM price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", numSalesFormatted, numItemsFormatted, numDaysFormatted, avgPriceFormatted, goldSymbol))
 		end
 
 		-- Crafting Cost
-		if (avgPrice == nil or avgPrice == 0) then
+		local craftCost, craftCostEach = MasterMerchant:itemCraftPrice(itemLink)
+
+		if craftCost == nil then
 			return
+
+		elseif (itemType == ITEMTYPE_POTION) or (itemType == ITEMTYPE_POISON) then
+			craftCostFormatted = FormattedCurrency(craftCost)
+			craftCostEachFormatted = FormattedCurrency(craftCostEach)
+			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>> (<<2>> each)<<3>> |r", craftCostFormatted,craftCostEachFormatted, goldSymbol))
+
+		elseif ((itemType == ITEMTYPE_DRINK) or (itemType == ITEMTYPE_FOOD)
+				or (itemType == ITEMTYPE_RECIPE and (specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_FOOD or specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_DRINK))) then
+			craftCostFormatted = FormattedCurrency(craftCost)
+			craftCostEachFormatted = FormattedCurrency(craftCostEach)
+			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>> (<<2>> each)<<3>> |r", craftCostFormatted,craftCostEachFormatted, goldSymbol))
+
 		else
-			local craftCost = MasterMerchant:itemCraftPrice(itemLink)
-			if craftCost ~= nil then
-				craftCostFormatted = FormattedCurrency(craftCost)
-				tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", craftCostFormatted))
-			end
+			craftCostFormatted = FormattedCurrency(craftCost)
+			tooltip:AddLine(zo_strformat("|c7171d1Craft cost: <<1>><<2>> |r", craftCostFormatted, goldSymbol))
 		end
 
-        -- Product Price
+		-- Product Price
 		if GPP.settings.recipes and avgPrice ~= nil and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
@@ -94,68 +106,67 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 			if productAvgPrice ~= nil then
 				productAvgPriceFormatted = FormattedCurrency(productAvgPrice)
-				tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>>|t16:16:EsoUI/Art/currency/currency_gold.dds|t |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted))
+				tooltip:AddLine(zo_strformat("|c7171d1Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", productNumSales, productNumItems, productNumDays, productAvgPriceFormatted, goldSymbol))
 			end
 		end
 	end
 
 	-- Tamriel Trade Centre
-    if GPP.settings.ttc and TamrielTradeCentre ~= nil then
+	if GPP.settings.ttc and TamrielTradeCentre ~= nil then
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
 
-        if (priceInfo == nil) then
-			--tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
+		if (priceInfo == nil) then
 			return
-        else
-          if (priceInfo.SuggestedPrice ~= nil) then
-			tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
-              TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
-          end
+		else
+			if (priceInfo.SuggestedPrice ~= nil) then
+				tooltip:AddLine(zo_strformat("|cf23d8eTTC <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
+				TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
+			end
 
-          if (true) then
-			tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
-              TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
-          end
+			if (true) then
+				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
+				TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
+			end
 
-          if (true) then
-            if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
-              tooltip:AddLine()
-            else
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
-            end
-          end
-        end
+			if (true) then
+				if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
+					tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
+					tooltip:AddLine()
+				else
+					tooltip:AddLine(zo_strformat("|cf23d8e<<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
+				end
+			end
+		end
 
-        if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
 
-		    if (priceInfo == nil) then
+			if (priceInfo == nil) then
 				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", GetString(TTC_PRICE_NOLISTINGDATA)))
 			else
-			  if (priceInfo.SuggestedPrice ~= nil) then
-				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
-				  TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
-			  end
-
-			  if (true) then
-				tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
-				  TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
-			  end
-
-			  if (true) then
-				if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
-					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
-				  tooltip:AddLine()
-				else
-					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
+				if (priceInfo.SuggestedPrice ~= nil) then
+					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_SUGGESTEDXTOY),
+						TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice, 0), TamrielTradeCentre:FormatNumber(priceInfo.SuggestedPrice * 1.25, 0))))
 				end
-			  end
+
+				if (true) then
+					tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_AGGREGATEPRICESXYZ), TamrielTradeCentre:FormatNumber(priceInfo.Avg),
+						TamrielTradeCentre:FormatNumber(priceInfo.Min), TamrielTradeCentre:FormatNumber(priceInfo.Max))))
+				end
+
+				if (true) then
+					if (priceInfo.EntryCount ~= priceInfo.AmountCount) then
+						tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGSYITEMS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount), TamrielTradeCentre:FormatNumber(priceInfo.AmountCount))))
+						tooltip:AddLine()
+					else
+						tooltip:AddLine(zo_strformat("|cf23d8eProduct <<1>>|r", string.format(GetString(TTC_PRICE_XLISTINGS), TamrielTradeCentre:FormatNumber(priceInfo.EntryCount))))
+					end
+				end
 			end
 		end
-    end
+	end
 end
 
 function InventoryHook(tooltip, method)
