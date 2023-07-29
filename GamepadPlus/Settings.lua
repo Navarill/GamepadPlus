@@ -13,9 +13,9 @@ function GamepadPlus:SettingsSetup()
 
 	GPP.defaults = {
 		invtooltip = true,
-		recipes = true,
+		recipes = false,
 		att = false,
-        eth = false,
+        eth = true,
 		mm = false,
 		ttc = false,
 	}
