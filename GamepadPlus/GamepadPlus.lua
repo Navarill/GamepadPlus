@@ -60,32 +60,31 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	if GPP.settings.eth and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
-		if priceData == nil then
+		if (priceData == nil or priceData == 0) then
 			return
 		else
-			local suggMinPrice = priceData.suggestedPriceMin
-			local suggMaxPrice = priceData.suggestedPriceMax
-			local avgPrice = priceData.average
-			local numListings = priceData.listings
-			local maxPrice = priceData.priceMax
-			local minPrice = priceData.priceMin
+			--local suggMinPrice = priceData.suggestedPriceMin
+			--local suggMaxPrice = priceData.suggestedPriceMax
+			--local avgPrice = priceData.average
+			--local numListings = priceData.listings
+			--local maxPrice = priceData.priceMax
+			--local minPrice = priceData.priceMin
 
-			if avgPrice > 0 then
-				suggMinFormatted = FormatCurrency(suggMinPrice)
-				suggMaxFormatted = FormatCurrency(suggMaxPrice)
-				avgPriceFormatted = FormatCurrency(avgPrice)
-				numListingsFormatted = ZO_CommaDelimitNumber(zo_floor(numListings))
-				maxPriceFormatted = FormatCurrency(maxPrice)
-				minPriceFormatted = FormatCurrency(minPrice)
+			--if avgPrice > 0 then
+			--suggMinFormatted = FormatCurrency(suggMinPrice)
+			--suggMaxFormatted = FormatCurrency(suggMaxPrice)
+			--avgPriceFormatted = FormatCurrency(avgPrice)
+			--numListingsFormatted = ZO_CommaDelimitNumber(zo_floor(numListings))
+			--maxPriceFormatted = FormatCurrency(maxPrice)
+			--minPriceFormatted = FormatCurrency(minPrice)
 
-				tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", avgPriceFormatted, goldSymbol))
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", minPriceFormatted, goldSymbol, maxPriceFormatted, goldSymbol, numListingsFormatted))
-				tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", suggMinFormatted, goldSymbol, suggMaxFormatted, goldSymbol))
-			end
+			tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>> |r", priceData.average))
+			--tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", minPriceFormatted, goldSymbol, maxPriceFormatted, goldSymbol, numListingsFormatted))
+			--tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", suggMinFormatted, goldSymbol, suggMaxFormatted, goldSymbol))
+			--end
 		end
 	end
 
---[[
 	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
 		local pricingData = MasterMerchant:itemStats(itemLink, false)
@@ -201,7 +200,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 		end
 	end
-	]]
 end
 
 
