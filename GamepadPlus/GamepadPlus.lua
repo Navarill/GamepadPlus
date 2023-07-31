@@ -33,7 +33,6 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	local itemType, specializedItemType = GetItemLinkItemType(itemLink)
 	goldSymbol = "|t16:16:EsoUI/Art/currency/currency_gold.dds|t"
 
-	--[[
 	-- Recipes
 	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
 		if(IsItemLinkRecipeKnown(itemLink)) then
@@ -54,8 +53,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>><<2>> |r", avgPriceFormatted, goldSymbol))
 		end
 	end
-]]
 
+	-- ESO Trading Hub still being developed. Working through itemLink inconsistency issues with Solinur
 	-- ESO Trading Hub
 	if GPP.settings.eth and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
