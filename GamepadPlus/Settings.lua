@@ -12,10 +12,10 @@ function GamepadPlus:SettingsSetup()
 	local LAM = LibAddonMenu2
 
 	GPP.defaults = {
-		invtooltip = true,
+		invtooltip = false,
 		recipes = false,
 		att = false,
-        eth = true,
+        eth = false,
 		mm = false,
 		ttc = false,
 	}
