@@ -16,12 +16,12 @@ GPP.title = "Gamepad Plus"
 GPP.author = "Navarill"
 GPP.version = "2.1.1"
 
-function FormatNumber(value, type)
-	if type == "currency" and value < 100 then
-		value = ZO_CommaDelimitDecimalNumber(zo_roundToNearest(value, 0.01))
-		return string.format("%.2f", value)
+function FormatNumber(num, type)
+	if type == "currency" and num < 100 then
+		num = ZO_CommaDelimitDecimalNumber(zo_roundToNearest(num, 0.01))
+		return string.format("%.2f", num)
 	else
-		return ZO_CommaDelimitNumber(zo_floor(value))
+		return ZO_CommaDelimitNumber(zo_floor(num))
 	end
 end
 
@@ -48,12 +48,11 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
-	-- ESO Trading Hub
-	-- ESO Trading Hub is work in progress. Solinur working on itemLink inconsistency in API.
+	-- ESO Trading Hub (work in progress - Solinur working on API which is currently not returning the correct data)
 	if GPP.settings.eth and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
-		if priceData ~= nil and priceData ~= 0 then
+		if priceData ~= nil then
 			local suggMinPrice = priceData.suggestedPriceMin
 			local suggMaxPrice = priceData.suggestedPriceMax
 			local avgPrice = priceData.average
@@ -61,10 +60,13 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local maxPrice = priceData.priceMax
 			local minPrice = priceData.priceMin
 
-			tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", FormatNumber(avgPrice, "currency"), symbolGold))
-			tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", FormatNumber(minPrice, "currency"), symbolGold, FormatNumber(maxPrice, "currency"), symbolGold, FormatNumber(numListings)))
+			if avgPrice ~= nil then
+				tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", FormatNumber(avgPrice, "currency"), symbolGold))
 
-			if suggMinPrice ~= nil and suggMaxPrice ~= nil then
+			elseif minPrice ~= nil and maxPrice ~= nil then
+				tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", FormatNumber(minPrice, "currency"), symbolGold, FormatNumber(maxPrice, "currency"), symbolGold, FormatNumber(numListings)))
+
+			elseif suggMinPrice ~= nil and suggMaxPrice ~= nil then
 				tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", FormatNumber(suggMinPrice, "currency"), symbolGold, FormatNumber(suggMaxPrice, "currency"), symbolGold))
 			end
 		end
@@ -72,45 +74,51 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
-		local pricingData = MasterMerchant:itemStats(itemLink, false)
-		local avgPrice = pricingData.avgPrice
-		local numSales = pricingData.numSales
-		local numDays = pricingData.numDays
-		local numItems = pricingData.numItems
+		local priceData = MasterMerchant:itemStats(itemLink, false)
 
-		if avgPrice ~= nil and avgPrice ~= 0 then
-			tooltip:AddLine(zo_strformat("|c7171d1MM price: (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(numSales), FormatNumber(numItems), FormatNumber(numDays), FormatNumber(avgPrice, "currency"), symbolGold))
-		end
+		if priceData ~= nil then
+			local avgPrice = priceData.avgPrice
+			local numSales = priceData.numSales
+			local numDays = priceData.numDays
+			local numItems = priceData.numItems
 
-		-- Crafting Cost
-		local craftCost, craftCostEach = MasterMerchant:itemCraftPrice(itemLink)
+			if avgPrice ~= nil then
+				tooltip:AddLine(zo_strformat("|c7171d1MM price: (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(numSales), FormatNumber(numItems), FormatNumber(numDays), FormatNumber(avgPrice, "currency"), symbolGold))
+			end
 
-		if craftCost ~= nil and craftCost ~= 0 and craftCostEach ~= nil and craftCostEach ~= 0 then
-			if (itemType == ITEMTYPE_POTION) or (itemType == ITEMTYPE_POISON) then
-				tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>> (<<2>> each)<<3>> |r", FormatNumber(craftCost, "currency"), FormatNumber(craftCostEach, "currency"), symbolGold))
+			-- Crafting Cost
+			local craftCost, craftCostEach = MasterMerchant:itemCraftPrice(itemLink)
 
-            elseif ((itemType == ITEMTYPE_DRINK) or (itemType == ITEMTYPE_FOOD) or
+			if craftCost ~= nil and craftCostEach ~= nil then
+				if (itemType == ITEMTYPE_POTION) or (itemType == ITEMTYPE_POISON) then
+					tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>> (<<2>> each)<<3>> |r", FormatNumber(craftCost, "currency"), FormatNumber(craftCostEach, "currency"), symbolGold))
+
+				elseif ((itemType == ITEMTYPE_DRINK) or (itemType == ITEMTYPE_FOOD) or
 						(itemType == ITEMTYPE_RECIPE and
-							(specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_FOOD or
-                            specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_DRINK))) then
-				tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>> (<<2>> each)<<3>> |r", FormatNumber(craftCost, "currency"), FormatNumber(craftCostEach, "currency"), symbolGold))
+								(specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_FOOD or
+										specializedItemType == SPECIALIZED_ITEMTYPE_RECIPE_PROVISIONING_STANDARD_DRINK))) then
+					tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>> (<<2>> each)<<3>> |r", FormatNumber(craftCost, "currency"), FormatNumber(craftCostEach, "currency"), symbolGold))
 
-            else
-            	tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>><<2>> |r", FormatNumber(craftCost, "currency"), symbolGold))
-            end
-		end
+				else
+					tooltip:AddLine(zo_strformat("|c7171d1MM Craft cost: <<1>><<2>> |r", FormatNumber(craftCost, "currency"), symbolGold))
+				end
+			end
 
-		-- Product Price
-		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
-			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
-			local productPricingData = MasterMerchant:itemStats(resultItemLink, false)
-			local productAvgPrice = productPricingData.avgPrice
-			local productNumSales = productPricingData.numSales
-			local productNumDays = productPricingData.numDays
-			local productNumItems = productPricingData.numItems
+			-- Product Price
+			if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+				local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
+				local productPriceData = MasterMerchant:itemStats(resultItemLink, false)
 
-			if productAvgPrice ~= nil then
-				tooltip:AddLine(zo_strformat("|c7171d1MM Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(productNumSales), FormatNumber(productNumItems), FormatNumber(productNumDays), FormatNumber(productAvgPrice, "currency"), symbolGold))
+				if productPriceData ~= nil then
+					local productAvgPrice = productPriceData.avgPrice
+					local productNumSales = productPriceData.numSales
+					local productNumDays = productPriceData.numDays
+					local productNumItems = productPriceData.numItems
+
+					if productAvgPrice ~= nil then
+						tooltip:AddLine(zo_strformat("|c7171d1MM Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(productNumSales), FormatNumber(productNumItems), FormatNumber(productNumDays), FormatNumber(productAvgPrice, "currency"), symbolGold))
+					end
+				end
 			end
 		end
 	end
