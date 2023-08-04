@@ -53,21 +53,27 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
 		if priceData ~= nil then
-			local suggMinPrice = priceData.suggestedPriceMin
-			local suggMaxPrice = priceData.suggestedPriceMax
-			local avgPrice = priceData.average
-			local numListings = priceData.listings
-			local maxPrice = priceData.priceMax
-			local minPrice = priceData.priceMin
+			local suggestedListingPriceMin	= priceData.suggestedListingPriceMin
+			local suggestedListingPriceMax	= priceData.suggestedListingPriceMax
+			local averageListing			= priceData.averageListing
+			local numberOfListings			= priceData.numberOflistings
+			local listingPriceMax			= priceData.listingPriceMax
+			local listingPriceMin			= priceData.listingPriceMin
+			--local suggestedSalesPriceMin	= priceData.suggestedSalesPriceMin
+			--local suggestedSalesPriceMax	= priceData.suggestedSalesPriceMax
+			--local averageSales			= priceData.averageSales
+			--local numberOfSale			= priceData.numberOfSales
+			--local salesPriceMa			= priceData.salesPriceMax
+			--local salesPriceMi			= priceData.salesPriceMin
 
-			if avgPrice ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", FormatNumber(avgPrice, "currency"), symbolGold))
+			if averageListing ~= nil then
+				tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", FormatNumber(averageListing, "currency"), symbolGold))
 
-			elseif minPrice ~= nil and maxPrice ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", FormatNumber(minPrice, "currency"), symbolGold, FormatNumber(maxPrice, "currency"), symbolGold, FormatNumber(numListings)))
+			elseif listingPriceMax ~= nil and listingPriceMin ~= nil and numberOfListings ~= nil then
+				tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", FormatNumber(listingPriceMin, "currency"), symbolGold, FormatNumber(listingPriceMax, "currency"), symbolGold, FormatNumber(numberOfListings)))
 
-			elseif suggMinPrice ~= nil and suggMaxPrice ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", FormatNumber(suggMinPrice, "currency"), symbolGold, FormatNumber(suggMaxPrice, "currency"), symbolGold))
+			elseif suggestedListingPriceMin ~= nil and suggestedListingPriceMax ~= nil then
+				tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", FormatNumber(suggestedListingPriceMin, "currency"), symbolGold, FormatNumber(suggestedListingPriceMax, "currency"), symbolGold))
 			end
 		end
 	end
@@ -82,7 +88,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			local numDays = priceData.numDays
 			local numItems = priceData.numItems
 
-			if avgPrice ~= nil then
+			if 	avgPrice ~= nil and numSales ~= nil and numDays ~= nil and numItems ~= nil then
 				tooltip:AddLine(zo_strformat("|c7171d1MM price: (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(numSales), FormatNumber(numItems), FormatNumber(numDays), FormatNumber(avgPrice, "currency"), symbolGold))
 			end
 
@@ -115,7 +121,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 					local productNumDays = productPriceData.numDays
 					local productNumItems = productPriceData.numItems
 
-					if productAvgPrice ~= nil then
+					if productAvgPrice ~= nil and productNumSales ~= nil and productNumDays ~= nil and productNumItems ~= nil then
 						tooltip:AddLine(zo_strformat("|c7171d1MM Product price (<<1[no sales/1 sale/$d sales]>>/<<2[no items/1 item/$d items]>>, <<3[no days/1 day/$d days]>>): <<4>><<5>> |r", FormatNumber(productNumSales), FormatNumber(productNumItems), FormatNumber(productNumDays), FormatNumber(productAvgPrice, "currency"), symbolGold))
 					end
 				end
