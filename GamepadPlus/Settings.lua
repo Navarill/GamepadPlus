@@ -15,7 +15,7 @@ function GamepadPlus:SettingsSetup()
 		invtooltip = false,
 		recipes = false,
 		att = false,
-        eth = false,
+        -- eth = false,
 		mm = false,
 		ttc = false,
 	}
@@ -89,6 +89,7 @@ function GamepadPlus:SettingsSetup()
             default = GPP.defaults.att,
         },
 
+        --[[
         -- Checkbox for ESO Trading Hub
         {
             type = "checkbox",
@@ -99,6 +100,7 @@ function GamepadPlus:SettingsSetup()
             width = "full",
             default = GPP.defaults.eth,
         },
+        ]]
 
 		-- Checkbox for Master Merchant
         {

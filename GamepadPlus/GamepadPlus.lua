@@ -48,7 +48,8 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
-	-- ESO Trading Hub (work in progress - Solinur working on API which is currently not returning the correct data)
+--[[
+-- ESO Trading Hub (work in progress - Solinur working on API which is currently not returning the correct data)
 	if GPP.settings.eth and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
@@ -77,6 +78,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 		end
 	end
+]]
 
 	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
