@@ -44,41 +44,65 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
 
 		if avgPrice ~= nil and avgPrice ~= 0 then
-			tooltip:AddLine(zo_strformat("|cf58585ATT price: <<1>><<2>> |r", FormatNumber(avgPrice, "currency"), symbolGold))
+			tooltip:AddLine(zo_strformat("|cf58585ATT average price: <<1>><<2>> |r", FormatNumber(avgPrice, "currency"), symbolGold))
 		end
 	end
 
---[[
 -- ESO Trading Hub (work in progress - Solinur working on API which is currently not returning the correct data)
-	if GPP.settings.eth and LibEsoHubPrices then
+	if (GPP.settings.ethl or GPP.settings.eths) and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
 		if priceData ~= nil then
-			local suggestedListingPriceMin	= priceData.suggestedListingPriceMin
-			local suggestedListingPriceMax	= priceData.suggestedListingPriceMax
-			local averageListing			= priceData.averageListing
-			local numberOfListings			= priceData.numberOfListings
-			local listingPriceMax			= priceData.listingPriceMax
-			local listingPriceMin			= priceData.listingPriceMin
-			--local suggestedSalesPriceMin	= priceData.suggestedSalesPriceMin
-			--local suggestedSalesPriceMax	= priceData.suggestedSalesPriceMax
-			--local averageSales			= priceData.averageSales
-			--local numberOfSale			= priceData.numberOfSales
-			--local salesPriceMa			= priceData.salesPriceMax
-			--local salesPriceMi			= priceData.salesPriceMin
 
-			if averageListing ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8eESO-Hub average price: <<1>><<2>> |r", FormatNumber(averageListing, "currency"), symbolGold))
+			-- Listing Prices
+			if GPP.settings.ethl then
+				local suggestedListingPriceMin	= priceData.suggestedListingPriceMin
+				local suggestedListingPriceMax	= priceData.suggestedListingPriceMax
+				local averageListing			= priceData.averageListing
+				local numberOfListings			= priceData.numberOfListings
+				local listingPriceMax			= priceData.listingPriceMax
+				local listingPriceMin			= priceData.listingPriceMin
+
+				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub.com Listings Data |r"))
+
+				if averageListing ~= nil then
+					tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageListing, "currency"), symbolGold))
+				end
+
+				if listingPriceMax ~= nil and listingPriceMin ~= nil and numberOfListings ~= nil then
+					tooltip:AddLine(zo_strformat("<<1>><<2>> - <<3>><<4>> in <<5>> listings", FormatNumber(listingPriceMin, "currency"), symbolGold, FormatNumber(listingPriceMax, "currency"), symbolGold, FormatNumber(numberOfListings)))
+				end
+
+				if suggestedListingPriceMin ~= nil and suggestedListingPriceMax ~= nil then
+					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedListingPriceMin, "currency"), symbolGold, FormatNumber(suggestedListingPriceMax, "currency"), symbolGold))
+				end
 			end
-			if listingPriceMax ~= nil and listingPriceMin ~= nil and numberOfListings ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8e<<1>><<2>> - <<3>><<4>> in <<5>> listings |r", FormatNumber(listingPriceMin, "currency"), symbolGold, FormatNumber(listingPriceMax, "currency"), symbolGold, FormatNumber(numberOfListings)))
-			end
-			if suggestedListingPriceMin ~= nil and suggestedListingPriceMax ~= nil then
-				tooltip:AddLine(zo_strformat("|cf23d8eSuggested price: <<1>><<2>> - <<3>><<4>> |r", FormatNumber(suggestedListingPriceMin, "currency"), symbolGold, FormatNumber(suggestedListingPriceMax, "currency"), symbolGold))
+
+			-- Sales Prices
+			if GPP.settings.eths then
+				local suggestedSalesPriceMin	= priceData.suggestedSalesPriceMin
+				local suggestedSalesPriceMax	= priceData.suggestedSalesPriceMax
+				local averageSales				= priceData.averageSales
+				local numberOfSales				= priceData.numberOfSales
+				local salesPriceMax				= priceData.salesPriceMax
+				local salesPriceMin				= priceData.salesPriceMin
+
+				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub.com Sales Data |r"))
+
+				if averageSales ~= nil then
+					tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageSales, "currency"), symbolGold))
+				end
+
+				if salesPriceMin ~= nil and salesPriceMax ~= nil and numberOfSales ~= nil then
+					tooltip:AddLine(zo_strformat("<<1>><<2>> - <<3>><<4>> in <<5>> sales", FormatNumber(salesPriceMin, "currency"), symbolGold, FormatNumber(salesPriceMax, "currency"), symbolGold, FormatNumber(numberOfSales)))
+				end
+
+				if suggestedSalesPriceMin ~= nil and suggestedSalesPriceMax ~= nil then
+					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedSalesPriceMin, "currency"), symbolGold, FormatNumber(suggestedSalesPriceMax, "currency"), symbolGold))
+				end
 			end
 		end
 	end
-]]
 
 	-- Master Merchant
 	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
