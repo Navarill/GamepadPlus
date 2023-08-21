@@ -7,9 +7,9 @@
 ## Title: GamepadPlus
 ## Description: Gamepad UI enhancement for display of market data
 ## Author: Navarill
-## Version: 2.1.1
-## APIVersion: 101038 101039
-## AddOnVersion: 020101
+## Version: 2.2.2
+## APIVersion: 101039
+## AddOnVersion: 020202
 ## DependsOn: LibSavedVars LibAddonMenu-2.0
 ## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Data
