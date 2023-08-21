@@ -23,8 +23,8 @@ function GamepadPlus:SettingsSetup()
 
 	-- Initialize saved variables
 	GPP.settings = LibSavedVars
-		:NewAccountWide(GPP.name .. "_Data", GPP.defaults)
-		:AddCharacterSettingsToggle(GPP.name .. "_Data")
+		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
+		:AddCharacterSettingsToggle(GPP.name .. "_Character")
 
 	-- Settings panel
 	local panelData = {
