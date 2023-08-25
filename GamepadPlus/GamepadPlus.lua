@@ -48,7 +48,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
--- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning correct data for guild stores)
+-- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning complete data for guild stores)
 	if (GPP.settings.ethl or GPP.settings.eths) and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
@@ -246,10 +246,10 @@ end
 function LoadModules()
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
-	InventoryMenuHook(GAMEPAD_INVENTORY, "UpdateCategoryLeftTooltip")
-	InventoryCompanionMenuHook(COMPANION_EQUIPMENT_GAMEPAD, "UpdateCategoryLeftTooltip")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_RIGHT_TOOLTIP), "LayoutBagItem")
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_MOVABLE_TOOLTIP), "LayoutBagItem")
+	InventoryMenuHook(GAMEPAD_INVENTORY, "UpdateCategoryLeftTooltip")
+	InventoryCompanionMenuHook(COMPANION_EQUIPMENT_GAMEPAD, "UpdateCategoryLeftTooltip")
 
 	_initialized = true
 	end
