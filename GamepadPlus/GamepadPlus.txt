@@ -2,7 +2,7 @@
 ## Description: Gamepad UI enhancement for display of market data
 ## Author: Navarill
 ## Version: 2.2.2
-## APIVersion: 101039
+## APIVersion: 101039 101040
 ## AddOnVersion: 020202
 ## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=34
 ## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
