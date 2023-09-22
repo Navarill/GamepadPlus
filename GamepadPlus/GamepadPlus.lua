@@ -55,7 +55,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		if priceData ~= nil then
 
 			-- Listing Prices
-			if GPP.settings.ethl then
+			if GPP.settings.ethl and priceData.averageListing ~= nil then
 				local suggestedListingPriceMin	= priceData.suggestedListingPriceMin
 				local suggestedListingPriceMax	= priceData.suggestedListingPriceMax
 				local averageListing			= priceData.averageListing
@@ -69,9 +69,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedListingPriceMin, "currency"), symbolGold, FormatNumber(suggestedListingPriceMax, "currency"), symbolGold))
 				end
 
-				if averageListing ~= nil then
-					tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageListing, "currency"), symbolGold))
-				end
+				tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageListing, "currency"), symbolGold))
 
 				if listingPriceMax ~= nil and listingPriceMin ~= nil and numberOfListings ~= nil then
 					tooltip:AddLine(zo_strformat("<<1>><<2>> - <<3>><<4>> in <<5[no listings/1 listing/$d listings]>>", FormatNumber(listingPriceMin, "currency"), symbolGold, FormatNumber(listingPriceMax, "currency"), symbolGold, FormatNumber(numberOfListings)))
@@ -79,7 +77,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 
 			-- Sales Prices
-			if GPP.settings.eths then
+			if GPP.settings.eths and priceData.averageSales ~= nil then
 				local suggestedSalesPriceMin	= priceData.suggestedSalesPriceMin
 				local suggestedSalesPriceMax	= priceData.suggestedSalesPriceMax
 				local averageSales				= priceData.averageSales
@@ -93,9 +91,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedSalesPriceMin, "currency"), symbolGold, FormatNumber(suggestedSalesPriceMax, "currency"), symbolGold))
 				end
 
-				if averageSales ~= nil then
-					tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageSales, "currency"), symbolGold))
-				end
+				tooltip:AddLine(zo_strformat("Average price: <<1>><<2>>", FormatNumber(averageSales, "currency"), symbolGold))
 
 				if salesPriceMin ~= nil and salesPriceMax ~= nil and numberOfSales ~= nil then
 					tooltip:AddLine(zo_strformat("<<1>><<2>> - <<3>><<4>> in <<5[no sales/1 sale/$d sales]>>", FormatNumber(salesPriceMin, "currency"), symbolGold, FormatNumber(salesPriceMax, "currency"), symbolGold, FormatNumber(numberOfSales)))
