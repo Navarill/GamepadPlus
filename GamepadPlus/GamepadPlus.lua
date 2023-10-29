@@ -12,7 +12,7 @@ local GPP = GamepadPlus
 
 GPP.settings = {}
 GPP.name = "GamepadPlus"
-GPP.title = "Gamepad Plus"
+GPP.title = "GamepadPlus"
 GPP.author = "Navarill"
 GPP.version = "2.2.2"
 
