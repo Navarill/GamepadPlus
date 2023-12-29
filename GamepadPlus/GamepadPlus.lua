@@ -48,7 +48,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
--- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning complete data for guild stores)
+	-- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning complete data for guild stores)
 	if (GPP.settings.ethl or GPP.settings.eths) and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
@@ -63,7 +63,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 				local listingPriceMax			= priceData.listingPriceMax
 				local listingPriceMin			= priceData.listingPriceMin
 
-				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub.com Listings Data |r"))
+				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub Listings Data |r"))
 
 				if suggestedListingPriceMin ~= nil and suggestedListingPriceMax ~= nil then
 					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedListingPriceMin, "currency"), symbolGold, FormatNumber(suggestedListingPriceMax, "currency"), symbolGold))
@@ -85,7 +85,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 				local salesPriceMax				= priceData.salesPriceMax
 				local salesPriceMin				= priceData.salesPriceMin
 
-				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub.com Sales Data |r"))
+				tooltip:AddLine(zo_strformat("|cffff99ESO-Hub Sales Data (Last 14 days) |r"))
 
 				if suggestedSalesPriceMin ~= nil and suggestedSalesPriceMax ~= nil then
 					tooltip:AddLine(zo_strformat("Suggested price: <<1>><<2>> - <<3>><<4>>", FormatNumber(suggestedSalesPriceMin, "currency"), symbolGold, FormatNumber(suggestedSalesPriceMax, "currency"), symbolGold))
