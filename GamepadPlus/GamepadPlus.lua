@@ -14,7 +14,7 @@ GPP.settings = {}
 GPP.name = "GamepadPlus"
 GPP.title = "GamepadPlus"
 GPP.author = "Navarill"
-GPP.version = "2.2.4"
+GPP.version = "2.3.0"
 
 local function FormatNumber(num, type)
 	if type == "currency" and num < 100 then
@@ -239,6 +239,16 @@ function InventoryCompanionMenuHook(tooltip, method)
 	end
 end
 
+function GamepadPlus.UpdateCurrentSavedVars()
+	if not GamepadPlus.acctSavedVariables.accountWideSetting  then
+		GamepadPlus.curSavedVars = GamepadPlus.charSavedVariables
+		--d("Use Character setting")
+	else 
+		GamepadPlus.curSavedVars = GamepadPlus.acctSavedVariables
+		--d("Use Accountwide Setting")
+	end
+end
+
 function LoadModules()
 	if(not _initialized) then
 	InventoryHook(GAMEPAD_TOOLTIPS:GetTooltip(GAMEPAD_LEFT_TOOLTIP), "LayoutBagItem")
@@ -253,8 +263,9 @@ end
 
 function GPP.OnAddOnLoaded(eventCode, addOnName)
 	if (addOnName ~= GPP.name) then return end
+	
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
-
+	
 	GPP:SettingsSetup()
 
 	if(IsInGamepadPreferredMode()) then

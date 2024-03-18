@@ -11,7 +11,18 @@ function GamepadPlus:SettingsSetup()
 	local GPP = GamepadPlus
 	local LAM = LibAddonMenu2
 
-	GPP.defaults = {
+	GPP.defaultSettings = {
+		invtooltip = false,
+		recipes = false,
+		att = false,
+        ethl = false,
+        eths = false,
+		mm = false,
+		ttc = false,
+	}
+	
+	GPP.defaultAcctSettings = {
+		acctWideSetting = true,
 		invtooltip = false,
 		recipes = false,
 		att = false,
@@ -22,9 +33,10 @@ function GamepadPlus:SettingsSetup()
 	}
 
 	-- Initialize saved variables
-	GPP.settings = LibSavedVars
-		:NewAccountWide(GPP.name .. "_Account", GPP.defaults)
-		:AddCharacterSettingsToggle(GPP.name .. "_Character")
+	GPP.charSavedVariables = ZO_SavedVars:New('GamepadPlusSavedVars', 1.0, nil, GPP.defaultSettings)
+  	GPP.acctSavedVariables = ZO_SavedVars:NewAccountWide('GamepadPlusSavedVars', 1.0, nil, GPP.defaultAcctSettings)
+
+	GPP.UpdateCurrentSavedVars()
 
 	-- Settings panel
 	local panelData = {
@@ -43,7 +55,18 @@ function GamepadPlus:SettingsSetup()
 	local optionsTable = {
 
 		-- Account-wide settings
-        GPP.settings:GetLibAddonMenuAccountCheckbox(),
+		{
+			type = "checkbox",
+			name = "Account-Wide Settings",
+			tooltip = "Use account-wide settings.",
+			getFunc = function() return GPP.acctSavedVariables.acctWideSetting end,
+			setFunc = function(value) GPP.acctSavedVariables.acctWideSetting = value
+				GPP.UpdateCurrentSavedVars()
+				if value then
+				else
+				end
+			end,
+		},
 
 		-- Divider
 		{
