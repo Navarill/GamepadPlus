@@ -264,12 +264,5 @@ function GPP.OnAddOnLoaded(eventCode, addOnName)
 	end
 end
 
--- Temporary Fix for Gold Road (See comments from ZOS and InJustaGhost in ESOUI Gitter.
-if IsPrivateFunction('IsInUI') then
-	ZO_IsIngameUI = function()
-		return SCRIBING_DATA_MANAGER ~= nil
-	end
-end
-
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_ADD_ON_LOADED, GPP.OnAddOnLoaded)
 EVENT_MANAGER:RegisterForEvent(GPP.name, EVENT_GAMEPAD_PREFERRED_MODE_CHANGED, function(code, inGamepad) LoadModules() end)
