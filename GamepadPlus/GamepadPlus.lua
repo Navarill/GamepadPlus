@@ -14,7 +14,7 @@ GPP.settings = {}
 GPP.name = "GamepadPlus"
 GPP.title = "GamepadPlus"
 GPP.author = "Navarill"
-GPP.version = "2.2.4"
+GPP.version = "3.0.0"
 
 local function FormatNumber(num, type)
 	if type == "currency" and num < 100 then
