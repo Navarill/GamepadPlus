@@ -1,15 +1,15 @@
 ## Title: GamepadPlus
-## Description: Gamepad UI enhancement for display of market data
+## Description: Gamepad UI enhancement for display of market pricing data
 ## Author: Navarill
 ## Version: 3.0.0
 ## APIVersion: 101045
 ## AddOnVersion: 030000
-## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=37
+## DependsOn: LibSavedVars>=60007 LibAddonMenu-2.0>=38
 ## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Account GamepadPlus_Character
 
-GamepadPlus.lua
-Settings.lua
+Gamepad\GamepadPlus.lua
+Gamepad\Settings.lua
 
 # This Add-On is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates.
 # The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in

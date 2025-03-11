@@ -1,6 +1,6 @@
 --[[
 		GamepadPlus
-		Gamepad UI enhancement for display of market data
+		Gamepad UI enhancement for display of market pricing data
 		License: (To Be Determined)
 		Based on RockingDice's GamePadBuddy
 		https://www.esoui.com/downloads/info1773-GamePadBuddy.html
