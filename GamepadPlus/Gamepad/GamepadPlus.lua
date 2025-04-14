@@ -7,14 +7,26 @@
 		https://github.com/rockingdice/GamePadBuddy
 ]]
 
-GamepadPlus = {}
+GamepadPlus = {
+	name	= "GamepadPlus",
+	title	= "Gamepad Plus",
+	author	= "Navarill",
+	version	= "4.0.0",
+}
+
 local GPP = GamepadPlus
 
-GPP.settings = {}
-GPP.name = "GamepadPlus"
-GPP.title = "GamepadPlus"
-GPP.author = "Navarill"
-GPP.version = "3.0.0"
+-- Default settings
+GPP.defaults = {
+	accountwide = true,
+	invtooltip = true,
+	recipes = true,
+	att = false,
+	ethl = false,
+	eths = false,
+	mm = false,
+	ttc = false,
+}
 
 local function FormatNumber(num, type)
 	if type == "currency" and num < 100 then
@@ -31,7 +43,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	local symbolGold = "|t16:16:EsoUI/Art/currency/currency_gold.dds|t"
 
 	-- Recipes
-	if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+	if GPP.savedVars.recipes and itemType == ITEMTYPE_RECIPE then
 		if(IsItemLinkRecipeKnown(itemLink)) then
 			tooltip:AddLine(GetString(SI_RECIPE_ALREADY_KNOWN))
 		else
@@ -40,7 +52,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	end
 
 	-- Arkadius' Trade Tools
-	if GPP.settings.att and ArkadiusTradeTools then
+	if GPP.savedVars.att and ArkadiusTradeTools then
 		local avgPrice = ArkadiusTradeTools.Modules.Sales:GetAveragePricePerItem(itemLink, nil, nil)
 
 		if avgPrice ~= nil and avgPrice ~= 0 then
@@ -49,13 +61,13 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	end
 
 	-- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning complete data for guild stores)
-	if (GPP.settings.ethl or GPP.settings.eths) and LibEsoHubPrices then
+	if (GPP.savedVars.ethl or GPP.savedVars.eths) and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
 
 		if priceData ~= nil then
 
 			-- Listing Prices
-			if GPP.settings.ethl and priceData.averageListing ~= nil then
+			if GPP.savedVars.ethl and priceData.averageListing ~= nil then
 				local suggestedListingPriceMin	= priceData.suggestedListingPriceMin
 				local suggestedListingPriceMax	= priceData.suggestedListingPriceMax
 				local averageListing			= priceData.averageListing
@@ -77,7 +89,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 
 			-- Sales Prices
-			if GPP.settings.eths and priceData.averageSales ~= nil then
+			if GPP.savedVars.eths and priceData.averageSales ~= nil then
 				local suggestedSalesPriceMin	= priceData.suggestedSalesPriceMin
 				local suggestedSalesPriceMax	= priceData.suggestedSalesPriceMax
 				local averageSales				= priceData.averageSales
@@ -101,7 +113,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 	end
 
 	-- Master Merchant
-	if GPP.settings.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
+	if GPP.savedVars.mm and (MasterMerchant and MasterMerchant.isInitialized ~= false) and (LibGuildStore and LibGuildStore.guildStoreReady ~=  false) then
 		local priceData = MasterMerchant:itemStats(itemLink, false)
 
 		if priceData ~= nil then
@@ -133,7 +145,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 
 			-- Product Price
-			if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+			if GPP.savedVars.recipes and itemType == ITEMTYPE_RECIPE then
 				local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 				local productPriceData = MasterMerchant:itemStats(resultItemLink, false)
 
@@ -153,7 +165,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 
 	-- Tamriel Trade Centre
 	-- TODO: Cleanup TTC code and add TTC sales data
-	if GPP.settings.ttc and TamrielTradeCentre ~= nil then
+	if GPP.savedVars.ttc and TamrielTradeCentre ~= nil then
 		local itemInfo = TamrielTradeCentre_ItemInfo:New(itemLink)
 		local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(itemInfo)
 
@@ -180,7 +192,7 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 			end
 		end
 
-		if GPP.settings.recipes and itemType == ITEMTYPE_RECIPE then
+		if GPP.savedVars.recipes and itemType == ITEMTYPE_RECIPE then
 
 			local resultItemLink = GetItemLinkRecipeResultItemLink(itemLink)
 			local priceInfo = TamrielTradeCentrePrice:GetPriceInfo(resultItemLink)
@@ -223,7 +235,7 @@ function InventoryMenuHook(tooltip, method)
 	local origMethod = tooltip[method]
 	tooltip[method] = function(selectedData, ...)
 		origMethod(selectedData, ...)
-		if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
+		if GPP.savedVars.invtooltip and tooltip.selectedEquipSlot then
 			GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_WORN, tooltip.selectedEquipSlot)
 		end
 	end
@@ -233,7 +245,7 @@ function InventoryCompanionMenuHook(tooltip, method)
 	local origMethod = tooltip[method]
 	tooltip[method] = function(selectedData, ...)
 		origMethod(selectedData, ...)
-		if GPP.settings.invtooltip and tooltip.selectedEquipSlot then
+		if GPP.savedVars.invtooltip and tooltip.selectedEquipSlot then
 			GAMEPAD_TOOLTIPS:LayoutBagItem(GAMEPAD_LEFT_TOOLTIP, BAG_COMPANION_WORN, tooltip.selectedEquipSlot)
 		end
 	end
@@ -254,8 +266,19 @@ end
 function GPP.OnAddOnLoaded(eventCode, addOnName)
 	if (addOnName ~= GPP.name) then return end
 	EVENT_MANAGER:UnregisterForEvent(GPP.name, eventCode)
+	
+	-- Load saved variables
+	GPP.accountSavedVars = ZO_SavedVars:NewAccountWide("GamepadPlus_Data", 1, nil, GPP.defaults)
+    GPP.characterSavedVars = ZO_SavedVars:NewCharacterIdSettings("GamepadPlus_Data", 1, nil, GPP.defaults)
 
-	GPP:SettingsSetup()
+    if GPP.characterSavedVars.accountwide then
+        GPP.savedVars = GPP.accountSavedVars
+    else
+        GPP.savedVars = GPP.characterSavedVars
+    end
+
+	-- Settings menu (Settings.lua)
+	GPP:LoadSettings()
 
 	if(IsInGamepadPreferredMode()) then
 		LoadModules()
