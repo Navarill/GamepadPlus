@@ -5,7 +5,7 @@
 ## APIVersion: 101045 101046
 ## AddOnVersion: 040000
 ## DependsOn: LibAddonMenu-2.0>=38
-## ConsoleDependsOn: LibHarvensAddonSettings
+## ConsoleDependsOn: LibHarvensAddonSettings>20000
 ## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Data
 

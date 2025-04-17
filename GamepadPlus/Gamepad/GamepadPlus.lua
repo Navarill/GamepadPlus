@@ -60,11 +60,11 @@ function AddInventoryPreInfo(tooltip, bagId, slotIndex)
 		end
 	end
 
-	-- ESO Trading Hub (work in progress - Solinur working on API which is not consistently returning complete data for guild stores)
+	-- ESO Trading Hub
 	if (GPP.savedVars.ethl or GPP.savedVars.eths) and LibEsoHubPrices then
 		local priceData = LibEsoHubPrices.GetItemPriceData(itemLink)
-
-		if priceData ~= nil then
+		
+			if priceData ~= nil then
 
 			-- Listing Prices
 			if GPP.savedVars.ethl and priceData.averageListing ~= nil then
