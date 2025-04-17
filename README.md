@@ -6,4 +6,3 @@
      - ESO Trading Hub
      - Master Merchant
      - Tamriel Trade Centre
-4
