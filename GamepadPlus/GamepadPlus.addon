@@ -5,12 +5,13 @@
 ## APIVersion: 101045 101046
 ## AddOnVersion: 040000
 ## DependsOn: LibAddonMenu-2.0>=38
+## PCDependsOn: LibAddonMenu-2.0>=38
 ## ConsoleDependsOn: LibHarvensAddonSettings>20000
 ## OptionalDependsOn: ArkadiusTradeTools LibEsoHubPrices MasterMerchant TamrielTradeCentre
 ## SavedVariables: GamepadPlus_Data
 
-Gamepad\GamepadPlus.lua
-Gamepad\Settings.lua
+PC\GamepadPlus.lua
+PC\Settings.lua
 
 # This Add-On is not created by, affiliated with or sponsored by ZeniMax Media Inc. or its affiliates.
 # The Elder Scrolls® and related logos are registered trademarks or trademarks of ZeniMax Media Inc. in
